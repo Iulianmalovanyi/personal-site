@@ -1,16 +1,13 @@
 ---
 import Container from './Container.astro';
-import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+import { t } from '../i18n/ui';
 import { site } from '../data/site';
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 
 const links = [
   { label: 'LinkedIn', href: site.linkedin },
   { label: 'GitHub', href: site.github },
   { label: t('footer.email'), href: `mailto:${site.email}` },
-  { label: t('footer.rss'), href: localizePath('/writing/rss.xml', lang) },
+  { label: t('footer.rss'), href: '/writing/rss.xml' },
 ];
 ---
 <footer class="mt-24 border-t border-line/70">

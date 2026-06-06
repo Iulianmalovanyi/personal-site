@@ -6,7 +6,7 @@ import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { getLangFromUrl, useTranslations, getAlternatePath, getRouteParts, localizePath } from '../i18n/utils';
+import { t } from '../i18n/ui';
 
 interface Props {
   title?: string;
@@ -17,26 +17,15 @@ interface Props {
   noindex?: boolean;
 }
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-
 const { title, description = t('site.tagline'), ogImage = '/og-default.png', noindex = false } = Astro.props;
 const pageTitle = title ? `${title} — ${t('site.title')}` : `${t('site.title')} — ${t('site.role')}`;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url);
-
-// hreflang alternates linking the EN/UK versions of this page (§8).
-const { path } = getRouteParts(Astro.url);
-const alternates = [
-  { hreflang: 'en', href: new URL(localizePath(path, 'en'), Astro.site ?? Astro.url).href },
-  { hreflang: 'uk', href: new URL(localizePath(path, 'uk'), Astro.site ?? Astro.url).href },
-  { hreflang: 'x-default', href: new URL(localizePath(path, 'en'), Astro.site ?? Astro.url).href },
-];
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -48,12 +37,10 @@ const alternates = [
     <link rel="canonical" href={canonical.href} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
-
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={t('site.title')} />
-    <meta property="og:locale" content={lang === 'uk' ? 'uk_UA' : 'en_GB'} />
+    <meta property="og:locale" content="en_GB" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical.href} />
@@ -65,7 +52,7 @@ const alternates = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl.href} />
 
-    <link rel="alternate" type="application/rss+xml" title={t('site.title')} href={localizePath('/writing/rss.xml', lang)} />
+    <link rel="alternate" type="application/rss+xml" title={t('site.title')} href="/writing/rss.xml" />
 
     <!-- Set the theme before paint to avoid a flash (FOUC). -->
     <script is:inline>

@@ -2,8 +2,8 @@
 
 Personal website, portfolio, and a learning-in-public hub covering product
 management, reading/book notes, robotics & electronics, and personal growth.
-Built with **Astro + Tailwind + MDX**, bilingual (English default, Ukrainian
-under the URL path `/ua` — language code `uk`).
+Built with **Astro + Tailwind + MDX**. English-only for now (the bilingual
+version was removed — see `DECISIONS.md`).
 
 > The authoritative spec for this project is [`BRIEF.md`](./BRIEF.md). Read it
 > before making changes.
@@ -12,9 +12,8 @@ under the URL path `/ua` — language code `uk`).
 
 - **Framework:** Astro (content collections + MDX)
 - **Styling:** Tailwind CSS v4 (design tokens in `src/styles/global.css`)
-- **i18n:** Astro built-in routing — `en` at the root, Ukrainian under `/ua`.
-  The URL path is `ua` but the language tag stays `uk` (ISO 639-1); `ua` never
-  appears in `<html lang>` or `hreflang`.
+- **Language:** English-only (`<html lang="en">`). UI strings are centralised in
+  `src/i18n/ui.ts` via a small `t()` helper.
 - **Deploy:** local for now (`npm run dev`); host + custom domain TBD
 
 ## Getting started
@@ -31,20 +30,19 @@ npm run preview  # preview the production build locally
 ```
 src/
   content/        Content collections (articles, lessons, projects)
-    writing/      Blog posts — writing/en/<slug>.mdx + writing/ua/<slug>.mdx
-  i18n/           UI-strings dictionaries (en/uk) + helpers
+    writing/      Blog posts — writing/<slug>.mdx
+  i18n/           Centralised UI strings (ui.ts) + t() helper
   layouts/        Shared page layouts
-  pages/          Routes (en at root, Ukrainian under /ua)
+  pages/          Routes
   styles/         global.css — design tokens + Tailwind
 public/           Static assets (favicon, CV, OG images)
 ```
 
 ## Adding content
 
-Full non-developer instructions for adding an article in both languages are
-documented in M7 (see `BRIEF.md` §11). In short: copy the English template
-`.mdx`, then copy it into the `uk/` folder and translate the prose — keeping
-technical terms in English.
+Full non-developer instructions for adding an article are documented in M7. In
+short: copy the template `.mdx` into the relevant collection folder and edit the
+frontmatter + prose.
 
 ## Milestones
 

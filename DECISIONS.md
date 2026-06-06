@@ -4,6 +4,21 @@ Amendments and clarifications agreed during the build. `BRIEF.md` is the
 original authoritative spec; this file records where we've consciously deviated
 or extended it. Most recent first.
 
+## 2026-06-06 (latest)
+
+### Site is English-only — Ukrainian version removed
+The bilingual setup was removed and the site is now English-only. Reason:
+machine translation quality wasn't good enough, and maintaining a correct,
+separate Ukrainian version of every article would roughly 2–3× the content
+effort. Removed: `/ua` routes, the language switcher, Astro i18n config,
+`hreflang`/`og:locale` locale logic, and the per-locale content-folder
+convention. Kept: centralised UI strings in `src/i18n/ui.ts` (now English-only,
+via a `t()` helper). `<html lang="en">` everywhere.
+
+The bilingual implementation remains in git history (commit `3bb6cb8`) if a
+language is re-added later — at which point the §11 i18n rules in the brief apply
+again.
+
 ## 2026-06-06 (later)
 
 ### i18n: Ukrainian URL path is `/ua`, language code stays `uk`

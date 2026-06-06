@@ -4,41 +4,29 @@ import Container from '../Container.astro';
 import Button from '../Button.astro';
 import Card from '../Card.astro';
 import TrackCard from '../TrackCard.astro';
-import { getLangFromUrl, useTranslations, localizePath } from '../../i18n/utils';
+import { t } from '../../i18n/ui';
 import { tracks } from '../../data/tracks';
 import { site } from '../../data/site';
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 
 // Placeholder featured work — replaced by the projects collection in M3.
 // TODO: verify details when the real case studies are written.
 const featured = [
   {
-    tag: { en: 'Hardware capstone', uk: 'Hardware capstone' },
-    title: { en: 'Connected-device capstone', uk: 'Connected-device capstone' },
-    blurb: {
-      en: 'A device → cloud → app build that ties the whole hardware course together.',
-      uk: 'Збірка device → cloud → app, що поєднує весь курс із hardware.',
-    },
+    tag: 'Hardware capstone',
+    title: 'Connected-device capstone',
+    blurb: 'A device → cloud → app build that ties the whole hardware course together.',
     span: 'lg:col-span-3 lg:row-span-2',
   },
   {
-    tag: { en: 'PM case study', uk: 'PM case study' },
-    title: { en: 'Clinical decision support', uk: 'Clinical decision support' },
-    blurb: {
-      en: 'Earlier cancer detection for 20k+ clinicians in a regulated setting.',
-      uk: 'Раннє виявлення раку для 20k+ клініцистів у regulated середовищі.',
-    },
+    tag: 'PM case study',
+    title: 'Clinical decision support',
+    blurb: 'Earlier cancer detection for 20k+ clinicians in a regulated setting.',
     span: 'lg:col-span-3',
   },
   {
-    tag: { en: 'Experiment', uk: 'Experiment' },
-    title: { en: 'Live-coded experiments', uk: 'Live-coded experiments' },
-    blurb: {
-      en: 'A home for small, embeddable demos as I learn to build.',
-      uk: 'Місце для невеликих embeddable демо, поки я вчуся будувати.',
-    },
+    tag: 'Experiment',
+    title: 'Live-coded experiments',
+    blurb: 'A home for small, embeddable demos as I learn to build.',
     span: 'lg:col-span-3',
   },
 ];
@@ -50,8 +38,8 @@ const featured = [
     <h1 class="mt-4 max-w-4xl text-display">{t('site.title')}</h1>
     <p class="mt-6 max-w-2xl text-lead text-muted">{t('site.tagline')}</p>
     <div class="mt-9 flex flex-wrap gap-3">
-      <Button href={localizePath('/projects', lang)} variant="primary">{t('cta.viewWork')}</Button>
-      <Button href={localizePath('/learn', lang)} variant="secondary">{t('cta.readHub')}</Button>
+      <Button href="/projects" variant="primary">{t('cta.viewWork')}</Button>
+      <Button href="/learn" variant="secondary">{t('cta.readHub')}</Button>
       <Button href={site.linkedin} variant="ghost">{t('cta.connect')}</Button>
     </div>
   </Container>
@@ -60,15 +48,15 @@ const featured = [
   <Container class="py-12">
     <div class="mb-6 flex items-end justify-between gap-4">
       <h2 class="text-h2">{t('home.featured.title')}</h2>
-      <a href={localizePath('/projects', lang)} class="link-underline shrink-0 text-sm text-fg/70">{t('home.featured.viewAll')}</a>
+      <a href="/projects" class="link-underline shrink-0 text-sm text-fg/70">{t('home.featured.viewAll')}</a>
     </div>
     <div class="grid auto-rows-[minmax(11rem,auto)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
       {featured.map((p) => (
-        <Card href={localizePath('/projects', lang)} class={`flex flex-col justify-between ${p.span}`}>
-          <p class="text-xs font-medium uppercase tracking-wider text-accent">{p.tag[lang]}</p>
+        <Card href="/projects" class={`flex flex-col justify-between ${p.span}`}>
+          <p class="text-xs font-medium uppercase tracking-wider text-accent">{p.tag}</p>
           <div class="mt-6">
-            <h3 class="text-h3">{p.title[lang]}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-muted">{p.blurb[lang]}</p>
+            <h3 class="text-h3">{p.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{p.blurb}</p>
           </div>
         </Card>
       ))}
@@ -79,7 +67,7 @@ const featured = [
   <Container class="py-12">
     <div class="mb-2 flex items-end justify-between gap-4">
       <h2 class="text-h2">{t('home.exploring.title')}</h2>
-      <a href={localizePath('/learn', lang)} class="link-underline shrink-0 text-sm text-fg/70">{t('home.exploring.cta')}</a>
+      <a href="/learn" class="link-underline shrink-0 text-sm text-fg/70">{t('home.exploring.cta')}</a>
     </div>
     <p class="mb-6 max-w-2xl text-muted">{t('home.exploring.body')}</p>
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -91,7 +79,7 @@ const featured = [
   <Container class="py-12">
     <div class="mb-6 flex items-end justify-between gap-4">
       <h2 class="text-h2">{t('home.writing.title')}</h2>
-      <a href={localizePath('/writing', lang)} class="link-underline shrink-0 text-sm text-fg/70">{t('home.writing.viewAll')}</a>
+      <a href="/writing" class="link-underline shrink-0 text-sm text-fg/70">{t('home.writing.viewAll')}</a>
     </div>
     <Card class="text-muted">{t('home.writing.empty')}</Card>
   </Container>

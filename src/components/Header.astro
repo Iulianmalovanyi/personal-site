@@ -1,21 +1,16 @@
 ---
 import Container from './Container.astro';
 import ThemeToggle from './ThemeToggle.astro';
-import LanguageSwitcher from './LanguageSwitcher.astro';
-import { getLangFromUrl, useTranslations, getRouteParts, localizePath } from '../i18n/utils';
-import { navItems } from '../i18n/ui';
+import { t, navItems } from '../i18n/ui';
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const { path: currentPath } = getRouteParts(Astro.url);
-
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isActive = (itemPath: string) =>
   currentPath === itemPath || currentPath.startsWith(itemPath + '/');
 ---
 <header class="sticky top-0 z-50 border-b border-line/70 bg-canvas/80 backdrop-blur-md">
   <Container width="wide" as="nav" class="flex h-16 items-center justify-between gap-4">
     <!-- Brand -->
-    <a href={localizePath('/', lang)} class="group flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight">
+    <a href="/" class="group flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight">
       <span class="grid h-8 w-8 place-items-center rounded-[0.55rem] bg-fg text-[0.8rem] font-bold text-canvas transition-colors group-hover:bg-accent">IM</span>
       <span class="hidden sm:inline">{t('site.title')}</span>
     </a>
@@ -25,7 +20,7 @@ const isActive = (itemPath: string) =>
       {navItems.map((item) => (
         <li>
           <a
-            href={localizePath(item.path, lang)}
+            href={item.path}
             class:list={[
               'rounded-md px-3 py-2 text-sm font-medium transition-colors',
               isActive(item.path) ? 'text-accent' : 'text-fg/70 hover:text-fg',
@@ -40,7 +35,6 @@ const isActive = (itemPath: string) =>
 
     <!-- Controls -->
     <div class="flex items-center gap-2">
-      <LanguageSwitcher />
       <ThemeToggle />
       <button
         id="menu-toggle"
@@ -62,7 +56,7 @@ const isActive = (itemPath: string) =>
     <Container width="wide" class="flex flex-col py-2">
       {navItems.map((item) => (
         <a
-          href={localizePath(item.path, lang)}
+          href={item.path}
           class:list={[
             'rounded-md px-3 py-2.5 text-base font-medium transition-colors',
             isActive(item.path) ? 'text-accent' : 'text-fg/80 hover:text-fg',
