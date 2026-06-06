@@ -1,0 +1,18 @@
+---
+// Layout primitive: centered content column with consistent gutters.
+interface Props {
+  width?: 'prose' | 'default' | 'wide';
+  as?: string;
+  class?: string;
+}
+const { width = 'default', as = 'div', class: className = '' } = Astro.props;
+const Tag = as as any;
+const widths = {
+  prose: 'max-w-[var(--container-prose)]',
+  default: 'max-w-5xl',
+  wide: 'max-w-6xl',
+};
+---
+<Tag class={`mx-auto w-full px-5 sm:px-6 lg:px-8 ${widths[width]} ${className}`}>
+  <slot />
+</Tag>

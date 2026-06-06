@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../Container.astro';
+import Button from '../Button.astro';
+import Callout from '../Callout.astro';
+import Card from '../Card.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const t = useTranslations(getLangFromUrl(Astro.url));
+
+const tokens = [
+  { name: 'canvas', cls: 'bg-canvas border border-line' },
+  { name: 'surface', cls: 'bg-surface border border-line' },
+  { name: 'surface-2', cls: 'bg-surface-2 border border-line' },
+  { name: 'fg', cls: 'bg-fg' },
+  { name: 'muted', cls: 'bg-muted' },
+  { name: 'accent', cls: 'bg-accent' },
+  { name: 'line', cls: 'bg-line' },
+];
+---
+<BaseLayout title={t('sg.title')} noindex={true}>
+  <Container class="py-14">
+    <header class="mb-12">
+      <h1 class="text-h1">{t('sg.title')}</h1>
+      <p class="mt-3 max-w-prose text-lead text-muted">{t('sg.intro')}</p>
+    </header>
+
+    <!-- Colours -->
+    <section class="mb-14">
+      <h2 class="mb-5 text-h3 border-b border-line pb-2">{t('sg.colours')}</h2>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
+        {tokens.map((tok) => (
+          <div>
+            <div class={`h-16 w-full rounded-lg ${tok.cls}`}></div>
+            <p class="mt-2 font-mono text-xs text-muted">{tok.name}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Typography -->
+    <section class="mb-14">
+      <h2 class="mb-5 text-h3 border-b border-line pb-2">{t('sg.type')}</h2>
+      <div class="space-y-3">
+        <p class="text-display">Display</p>
+        <h1 class="text-h1">Heading 1 — Fraunces</h1>
+        <h2 class="text-h2">Heading 2 — Fraunces</h2>
+        <h3 class="text-h3">Heading 3 — Fraunces</h3>
+        <p class="text-lead text-muted">Lead paragraph — Inter, used for intros and standfirsts.</p>
+        <p class="max-w-prose">Body text — Inter. The quick brown fox jumps over the lazy dog. Optimised for reading at a comfortable measure with real vertical rhythm.</p>
+        <p class="font-mono text-sm">Mono — JetBrains Mono · const firmware = "OTA";</p>
+      </div>
+    </section>
+
+    <!-- Buttons -->
+    <section class="mb-14">
+      <h2 class="mb-5 text-h3 border-b border-line pb-2">{t('sg.buttons')}</h2>
+      <div class="flex flex-wrap items-center gap-3">
+        <Button variant="primary">Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="ghost">Ghost</Button>
+        <Button variant="primary" size="lg">Large</Button>
+      </div>
+    </section>
+
+    <!-- Callouts -->
+    <section class="mb-14">
+      <h2 class="mb-5 text-h3 border-b border-line pb-2">{t('sg.callouts')}</h2>
+      <Callout type="info"><p>Informational note — context a reader might want.</p></Callout>
+      <Callout type="warning" title="Regulatory detail"><p>Verify with a specialist before relying on it.</p></Callout>
+      <Callout type="pm"><p>Why this matters for a product decision, in one or two lines.</p></Callout>
+    </section>
+
+    <!-- Cards -->
+    <section class="mb-14">
+      <h2 class="mb-5 text-h3 border-b border-line pb-2">{t('sg.cards')}</h2>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Card href="#">
+          <p class="text-xs font-medium uppercase tracking-wider text-accent">Project</p>
+          <h3 class="mt-2 text-h3">Interactive card</h3>
+          <p class="mt-2 text-sm text-muted">Hover to see the lift + accent border.</p>
+        </Card>
+        <Card>
+          <p class="text-xs font-medium uppercase tracking-wider text-muted">Static</p>
+          <h3 class="mt-2 text-h3">Plain card</h3>
+          <p class="mt-2 text-sm text-muted">No href — no hover interaction.</p>
+        </Card>
+      </div>
+    </section>
+  </Container>
+</BaseLayout>

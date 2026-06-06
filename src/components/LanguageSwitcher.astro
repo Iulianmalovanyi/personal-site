@@ -1,0 +1,18 @@
+---
+import { getLangFromUrl, useTranslations, getAlternatePath } from '../i18n/utils';
+import { languages } from '../i18n/ui';
+
+const current = getLangFromUrl(Astro.url);
+const t = useTranslations(current);
+const other = current === 'en' ? 'uk' : 'en';
+const href = getAlternatePath(Astro.url, other);
+---
+<a
+  href={href}
+  class="inline-flex h-9 items-center gap-1.5 rounded-[var(--radius-pill)] border border-line px-3 text-sm font-medium text-fg/70 transition-colors hover:text-accent hover:border-accent/40"
+  aria-label={`${t('lang.switch')}: ${languages[other]}`}
+  data-astro-prefetch
+>
+  <span aria-hidden="true">{other.toUpperCase()}</span>
+  <span class="sr-only">{languages[other]}</span>
+</a>

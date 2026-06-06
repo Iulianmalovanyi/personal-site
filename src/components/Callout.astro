@@ -1,0 +1,35 @@
+---
+// Callout boxes for articles & lessons (§6): info / warning / PM takeaway.
+interface Props {
+  type?: 'info' | 'warning' | 'pm';
+  title?: string;
+}
+const { type = 'info', title } = Astro.props;
+
+const styles = {
+  info: {
+    box: 'border-l-[3px] border-l-sky-500 bg-sky-500/8',
+    label: 'text-sky-700 dark:text-sky-300',
+    defaultTitle: 'Note',
+  },
+  warning: {
+    box: 'border-l-[3px] border-l-amber-500 bg-amber-500/10',
+    label: 'text-amber-700 dark:text-amber-300',
+    defaultTitle: 'Worth checking',
+  },
+  pm: {
+    box: 'border-l-[3px] border-l-accent bg-accent/8',
+    label: 'text-accent',
+    defaultTitle: 'PM takeaway',
+  },
+};
+const s = styles[type];
+---
+<aside class={`my-6 rounded-r-[var(--radius-card)] px-5 py-4 ${s.box}`} role="note">
+  <p class={`mb-1 text-xs font-semibold uppercase tracking-wider ${s.label}`}>
+    {title ?? s.defaultTitle}
+  </p>
+  <div class="text-[0.95rem] leading-relaxed text-fg/90 [&>p]:m-0 [&>p+p]:mt-2">
+    <slot />
+  </div>
+</aside>

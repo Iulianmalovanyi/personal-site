@@ -1,0 +1,92 @@
+---
+import Container from './Container.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { getLangFromUrl, useTranslations, getRouteParts, localizePath } from '../i18n/utils';
+import { navItems } from '../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const { path: currentPath } = getRouteParts(Astro.url);
+
+const isActive = (itemPath: string) =>
+  currentPath === itemPath || currentPath.startsWith(itemPath + '/');
+---
+<header class="sticky top-0 z-50 border-b border-line/70 bg-canvas/80 backdrop-blur-md">
+  <Container width="wide" as="nav" class="flex h-16 items-center justify-between gap-4">
+    <!-- Brand -->
+    <a href={localizePath('/', lang)} class="group flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight">
+      <span class="grid h-8 w-8 place-items-center rounded-[0.55rem] bg-fg text-[0.8rem] font-bold text-canvas transition-colors group-hover:bg-accent">IM</span>
+      <span class="hidden sm:inline">{t('site.title')}</span>
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden items-center gap-1 md:flex">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={localizePath(item.path, lang)}
+            class:list={[
+              'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+              isActive(item.path) ? 'text-accent' : 'text-fg/70 hover:text-fg',
+            ]}
+            aria-current={isActive(item.path) ? 'page' : undefined}
+          >
+            {t(item.key)}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Controls -->
+    <div class="flex items-center gap-2">
+      <LanguageSwitcher />
+      <ThemeToggle />
+      <button
+        id="menu-toggle"
+        type="button"
+        class="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-pill)] border border-line text-fg/70 transition-colors hover:text-accent md:hidden"
+        aria-label={t('nav.menu')}
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+      </button>
+    </div>
+  </Container>
+
+  <!-- Mobile nav -->
+  <div id="mobile-nav" hidden class="border-t border-line/70 md:hidden">
+    <Container width="wide" class="flex flex-col py-2">
+      {navItems.map((item) => (
+        <a
+          href={localizePath(item.path, lang)}
+          class:list={[
+            'rounded-md px-3 py-2.5 text-base font-medium transition-colors',
+            isActive(item.path) ? 'text-accent' : 'text-fg/80 hover:text-fg',
+          ]}
+          aria-current={isActive(item.path) ? 'page' : undefined}
+        >
+          {t(item.key)}
+        </a>
+      ))}
+    </Container>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const nav = document.getElementById('mobile-nav');
+  toggle?.addEventListener('click', () => {
+    const open = nav?.hasAttribute('hidden');
+    if (open) {
+      nav?.removeAttribute('hidden');
+      toggle.setAttribute('aria-expanded', 'true');
+    } else {
+      nav?.setAttribute('hidden', '');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+</script>
