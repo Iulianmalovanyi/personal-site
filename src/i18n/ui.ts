@@ -57,7 +57,30 @@ export const ui = {
     'cta.connect': 'Connect on LinkedIn',
     'placeholder.heading': 'Coming soon',
     'placeholder.body':
-      'A personal site, portfolio, and a learning-in-public hub for robotics & electronics — built milestone by milestone.',
+      'A personal site and portfolio, plus a learning-in-public hub — on product management, the books I read, robotics & electronics, and growing as a PM and a person.',
+
+    // home
+    'home.featured.title': 'Selected work',
+    'home.featured.viewAll': 'All projects →',
+    'home.exploring.title': 'What I’m exploring',
+    'home.exploring.body':
+      'Learning in public across a few tracks — one is robotics & electronics; the rest are about becoming a sharper PM and a better-rounded person.',
+    'home.exploring.cta': 'Enter the Learning Hub →',
+    'home.writing.title': 'Latest writing',
+    'home.writing.viewAll': 'All writing →',
+    'home.writing.empty': 'First posts are on the way.',
+    'home.closing.title': 'Let’s talk',
+    'home.closing.body':
+      'Always up for a conversation about product, hardware, or health tech.',
+    'track.active': 'In progress',
+    'track.planned': 'Planned',
+
+    // about
+    'about.title': 'About',
+    'about.skills.title': 'What I bring',
+    'about.cv.download': 'Download CV (PDF)',
+    'about.cv.soon': 'CV — coming soon',
+    'about.connect.title': 'Connect',
 
     // styleguide
     'sg.title': 'Style guide',
@@ -107,7 +130,30 @@ export const ui = {
     'cta.connect': 'LinkedIn',
     'placeholder.heading': 'Незабаром',
     'placeholder.body':
-      'Персональний сайт, портфоліо та хаб навчання у відкритому форматі про robotics та electronics — будується крок за кроком.',
+      'Персональний сайт і портфоліо та хаб навчання у відкритому форматі — про product management, книги, які я читаю, robotics та electronics, і розвиток як PM та як особистості.',
+
+    // home
+    'home.featured.title': 'Вибрані роботи',
+    'home.featured.viewAll': 'Усі проєкти →',
+    'home.exploring.title': 'Що я досліджую',
+    'home.exploring.body':
+      'Навчання у відкритому форматі за кількома напрямами — один із них robotics та electronics; інші про те, як стати сильнішим PM і більш цілісною людиною.',
+    'home.exploring.cta': 'До навчального хабу →',
+    'home.writing.title': 'Останні нотатки',
+    'home.writing.viewAll': 'Усі нотатки →',
+    'home.writing.empty': 'Перші дописи вже скоро.',
+    'home.closing.title': 'Напишіть мені',
+    'home.closing.body':
+      'Завжди радий поговорити про product, hardware чи health tech.',
+    'track.active': 'У процесі',
+    'track.planned': 'Заплановано',
+
+    // about
+    'about.title': 'Про мене',
+    'about.skills.title': 'Що я приношу',
+    'about.cv.download': 'Завантажити CV (PDF)',
+    'about.cv.soon': 'CV — незабаром',
+    'about.connect.title': 'Контакти',
 
     // styleguide
     'sg.title': 'Гайд по стилю',

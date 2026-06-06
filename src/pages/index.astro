@@ -1,18 +1,4 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Container from '../components/Container.astro';
-import Button from '../components/Button.astro';
-import { useTranslations } from '../i18n/utils';
-
-const t = useTranslations('en');
+import Home from '../components/pages/Home.astro';
 ---
-<BaseLayout>
-  <Container class="flex min-h-[60vh] flex-col justify-center py-20">
-    <p class="text-sm font-medium uppercase tracking-widest text-accent">{t('site.role')}</p>
-    <h1 class="mt-4 max-w-3xl text-display">{t('placeholder.heading')}</h1>
-    <p class="mt-6 max-w-prose text-lead text-muted">{t('placeholder.body')}</p>
-    <div class="mt-10 flex flex-wrap gap-3">
-      <Button href="/styleguide" variant="secondary">View the style guide</Button>
-    </div>
-  </Container>
-</BaseLayout>
+<Home />

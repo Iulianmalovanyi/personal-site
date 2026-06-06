@@ -1,0 +1,29 @@
+---
+import Card from './Card.astro';
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+import type { Track } from '../data/tracks';
+
+interface Props {
+  track: Track;
+}
+const { track } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const href = localizePath(track.path, lang);
+const statusLabel = track.status === 'active' ? t('track.active') : t('track.planned');
+---
+<Card href={href} class="flex h-full flex-col">
+  <div class="flex items-center justify-between">
+    <span class="grid h-10 w-10 place-items-center rounded-[0.6rem] bg-surface-2 text-lg" aria-hidden="true">{track.glyph}</span>
+    <span
+      class:list={[
+        'rounded-[var(--radius-pill)] px-2.5 py-1 text-[0.7rem] font-medium uppercase tracking-wider',
+        track.status === 'active' ? 'bg-accent/12 text-accent' : 'bg-surface-2 text-muted',
+      ]}
+    >
+      {statusLabel}
+    </span>
+  </div>
+  <h3 class="mt-4 text-h3">{track.title[lang]}</h3>
+  <p class="mt-2 text-sm leading-relaxed text-muted">{track.blurb[lang]}</p>
+</Card>
