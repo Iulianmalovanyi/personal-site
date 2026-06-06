@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const t = useTranslations('uk');
+---
+
+<BaseLayout>
+  <main class="mx-auto flex min-h-screen max-w-2xl flex-col justify-center px-6 py-24">
+    <p class="text-sm font-medium uppercase tracking-widest text-[var(--color-accent)]">
+      {t('site.title')}
+    </p>
+    <h1 class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
+      {t('placeholder.heading')}
+    </h1>
+    <p class="mt-6 max-w-prose text-lg leading-relaxed text-[var(--color-ink)]/80">
+      {t('placeholder.body')}
+    </p>
+    <p class="mt-10 text-sm text-[var(--color-ink)]/60">
+      <a class="underline underline-offset-4 hover:text-[var(--color-accent)]" href="/">
+        ← English
+      </a>
+    </p>
+  </main>
+</BaseLayout>
