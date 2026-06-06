@@ -8,58 +8,58 @@ import { site } from '../../data/site';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-// First-person, British English, grounded in the author's CV (§4).
-const bio: Record<typeof lang, string[]> = {
-  en: [
-    'I’m a product manager with over four years in healthcare and software. At C the Signs I lead an AI-driven cancer decision-support platform, integrated with NHS EHR systems and used daily by more than 20,000 clinicians across roughly 30% of UK practices — regulated digital health, where quality and patient safety come before everything else.',
-    'I came to product through quality engineering. I started in QA — defining test strategy and automation from scratch — first on enterprise networking and monitoring products at SoftServe, then at C the Signs, where I was QA Lead before being promoted into product. That grounding in how systems actually break still shapes how I build them.',
-    'Now I’m extending into connected, hardware-enabled products — learning electronics, firmware, and the hardware lifecycle from the ground up. This site is where I do that learning in public, alongside notes on the books I read, the craft of product management, and growing as a person. Honest, in progress, and improving as I go.',
-  ],
-  uk: [
-    'Я product manager із понад чотирма роками досвіду в healthcare та software. У C the Signs я веду AI-driven платформу для cancer decision support, інтегровану з NHS EHR systems, якою щодня користуються понад 20 000 клініцистів приблизно у 30% практик Великої Британії — regulated digital health, де якість і patient safety понад усе.',
-    'До продукту я прийшов через quality engineering. Починав у QA — будував test strategy та автоматизацію з нуля — спершу на enterprise networking та monitoring продуктах у SoftServe, потім у C the Signs, де був QA Lead до підвищення в product. Це розуміння того, як системи ламаються насправді, досі формує те, як я їх будую.',
-    'Тепер я переходжу до connected, hardware-enabled продуктів — вивчаю electronics, firmware і hardware lifecycle з нуля. Цей сайт — місце, де я навчаюся у відкритому форматі: разом із нотатками про книги, які читаю, про ремесло product management і про розвиток як особистості. Чесно, у процесі та з постійним покращенням.',
-  ],
+// Three-part personal credo (§2a). Kept short and punchy in both languages.
+const epigraph: Record<typeof lang, string[]> = {
+  en: ['Clarity over comfort', 'Outcomes over output', 'Why before what'],
+  uk: ['Ясність понад комфорт', 'Результат понад обсяг', 'Спершу навіщо, тоді що'],
 };
 
-const skills: { heading: Record<typeof lang, string>; items: string[] }[] = [
-  {
-    heading: { en: 'Product', uk: 'Product' },
-    items: ['Product strategy', 'Roadmap planning', 'Backlog & prioritisation', 'Requirements management', 'Market & user research'],
-  },
-  {
-    heading: { en: 'Leadership & delivery', uk: 'Leadership & delivery' },
-    items: ['Cross-functional leadership', 'Stakeholder management', 'Release & go-to-market', 'Success-metrics tracking', 'Data-informed decisions'],
-  },
-  {
-    heading: { en: 'Quality & tools', uk: 'Quality & tools' },
-    items: ['Test strategy & automation', 'Scalable QA processes', 'Agile (Scrum)', 'Jira · Confluence · Figma'],
-  },
-];
+// English is the authoritative source text — kept verbatim (§2b).
+// Ukrainian translates the prose; technical/methodology terms stay in English (§11).
+const essay: Record<typeof lang, string[]> = {
+  en: [
+    'Hi, I’m Iulian — a product manager. For the past five years I’ve been building AI clinical decision-support software used daily by over 20,000 clinicians across thousands of NHS general practices to help catch cancer earlier — work that has supported the detection of tens of thousands of cancers.',
+    'Working where a single product decision can touch a patient outcome shaped how I think about the job: solve a real problem, respect the full context, and decide responsibly even when you can’t decide perfectly.',
+    'I didn’t start in product. I began in IT as a QA engineer — a deliberate choice, because I wanted to understand how technology actually gets built before trying to decide what we should build. That technical grounding still shapes how I work: I can talk to engineers in their own terms, ask sharper questions, and make more informed calls.',
+    'Roadmaps, prioritisation, discovery, stakeholder alignment — these are the craft, and every PM should be fluent in them. But they’re not the point. The real work starts when information is incomplete and priorities compete: bringing clarity, getting people around one shared outcome, and helping the team make a good decision and move. A big part of how I see the role is connecting people and perspectives — because many product problems turn out to be alignment and communication problems rather than purely technical ones.',
+    'I’d also rather ship less and change something real. What matters to me is whether the thing we built actually helped the people using it — not how much of it there was.',
+    'Right now I’m deliberately moving toward connected hardware — products where software meets the physical world. This site is where I document that journey: what I’m learning about electronics, embedded systems, and IoT, alongside notes on product, books, and the ideas I’m chewing on.',
+    'If you’re building something at that intersection — or just want to compare notes on product — I’d be glad to hear from you.',
+  ],
+  uk: [
+    'Привіт, я Юліан — product manager. Останні п’ять років я будую AI clinical decision-support software, яким щодня користуються понад 20 000 клініцистів у тисячах NHS general practices, щоб раніше виявляти рак — робота, яка допомогла виявити десятки тисяч випадків раку.',
+    'Робота там, де одне продуктове рішення може вплинути на стан пацієнта, сформувала те, як я бачу цю професію: розв’яжи реальну проблему, поважай весь контекст і ухвалюй рішення відповідально навіть тоді, коли не можеш вирішити ідеально.',
+    'Я починав не з продукту. Я почав в IT як QA engineer — свідомий вибір, бо хотів зрозуміти, як технології насправді створюються, перш ніж вирішувати, що саме нам варто будувати. Це технічне підґрунтя досі формує мою роботу: я можу говорити з інженерами їхньою мовою, ставити гостріші запитання й ухвалювати більш зважені рішення.',
+    'Roadmaps, prioritisation, discovery, stakeholder alignment — це ремесло, і кожен PM має вільно ним володіти. Але суть не в них. Справжня робота починається тоді, коли інформації бракує, а пріоритети конкурують: внести ясність, зібрати людей навколо одного спільного результату й допомогти команді ухвалити добре рішення та рухатися далі. Велика частина того, як я бачу цю роль, — це поєднувати людей і погляди, бо багато продуктових проблем виявляються проблемами alignment та комунікації, а не суто технічними.',
+    'Я також радше випущу менше, але зміню щось справжнє. Для мене важливо, чи те, що ми побудували, реально допомогло людям, які цим користуються, — а не скільки його було.',
+    'Зараз я свідомо рухаюся в бік connected hardware — продуктів, де software зустрічається з фізичним світом. Цей сайт — місце, де я документую цю подорож: що я дізнаюся про electronics, embedded systems та IoT, разом із нотатками про product, книги й ідеї, які мене зараз займають.',
+    'Якщо ти будуєш щось на цьому перетині — або просто хочеш обмінятися думками про product — буду радий почути від тебе.',
+  ],
+};
 ---
 <BaseLayout title={t('about.title')}>
   <Container width="prose" class="py-16">
-    <h1 class="text-h1">{t('about.title')}</h1>
+    <!-- Accessible page heading (the visible opening is the epigraph + greeting). -->
+    <h1 class="sr-only">{t('about.title')}</h1>
 
-    <div class="mt-8 space-y-5 text-[1.05rem] leading-relaxed">
-      {bio[lang].map((para) => <p>{para}</p>)}
-    </div>
-
-    <!-- Skills -->
-    <h2 class="mt-14 text-h3 border-b border-line pb-2">{t('about.skills.title')}</h2>
-    <div class="mt-6 grid gap-6 sm:grid-cols-3">
-      {skills.map((group) => (
-        <div>
-          <p class="text-xs font-semibold uppercase tracking-wider text-accent">{group.heading[lang]}</p>
-          <ul class="mt-3 space-y-1.5 text-sm text-fg/85">
-            {group.items.map((s) => <li>{s}</li>)}
-          </ul>
-        </div>
+    <!-- Epigraph / personal credo -->
+    <p class="text-xs uppercase tracking-[0.18em] text-muted sm:text-sm" role="doc-epigraph">
+      {epigraph[lang].map((part, i) => (
+        <>
+          {i > 0 && <span class="mx-1.5 text-line" aria-hidden="true">/</span>}
+          <span>{part}</span>
+        </>
       ))}
+    </p>
+
+    <!-- Essay (first paragraph as lead) -->
+    <div class="mt-10 space-y-5 text-[1.05rem] leading-relaxed">
+      <p class="text-lead text-fg">{essay[lang][0]}</p>
+      {essay[lang].slice(1).map((para) => <p>{para}</p>)}
     </div>
 
-    <!-- CV + connect -->
-    <div class="mt-14 flex flex-wrap items-center gap-3">
+    <!-- Actions -->
+    <div class="mt-12 flex flex-wrap items-center gap-3 border-t border-line pt-8">
       {site.cvPath
         ? <Button href={site.cvPath} variant="primary">{t('about.cv.download')}</Button>
         : <Button variant="secondary" class="cursor-default opacity-70">{t('about.cv.soon')}</Button>}

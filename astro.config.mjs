@@ -9,10 +9,12 @@ export default defineConfig({
   site: 'https://iulian.example',
 
   // English is the default locale, served at the root with NO prefix.
-  // Ukrainian is served under /uk. See BRIEF.md §11.
+  // Ukrainian is served under the URL path /ua, but its language CODE is `uk`
+  // (correct ISO 639-1 / BCP 47 tag). `ua` is only a URL path, never a lang tag.
+  // See BRIEF.md §11 and DECISIONS.md.
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'uk'],
+    locales: ['en', { path: 'ua', codes: ['uk'] }],
     routing: {
       prefixDefaultLocale: false,
     },

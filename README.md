@@ -3,7 +3,7 @@
 Personal website, portfolio, and a learning-in-public hub covering product
 management, reading/book notes, robotics & electronics, and personal growth.
 Built with **Astro + Tailwind + MDX**, bilingual (English default, Ukrainian
-under `/uk`).
+under the URL path `/ua` — language code `uk`).
 
 > The authoritative spec for this project is [`BRIEF.md`](./BRIEF.md). Read it
 > before making changes.
@@ -12,7 +12,9 @@ under `/uk`).
 
 - **Framework:** Astro (content collections + MDX)
 - **Styling:** Tailwind CSS v4 (design tokens in `src/styles/global.css`)
-- **i18n:** Astro built-in routing — `en` at the root, `uk` under `/uk`
+- **i18n:** Astro built-in routing — `en` at the root, Ukrainian under `/ua`.
+  The URL path is `ua` but the language tag stays `uk` (ISO 639-1); `ua` never
+  appears in `<html lang>` or `hreflang`.
 - **Deploy:** local for now (`npm run dev`); host + custom domain TBD
 
 ## Getting started
@@ -29,10 +31,10 @@ npm run preview  # preview the production build locally
 ```
 src/
   content/        Content collections (articles, lessons, projects)
-    writing/      Blog posts — writing/en/<slug>.mdx + writing/uk/<slug>.mdx
+    writing/      Blog posts — writing/en/<slug>.mdx + writing/ua/<slug>.mdx
   i18n/           UI-strings dictionaries (en/uk) + helpers
   layouts/        Shared page layouts
-  pages/          Routes (en at root, uk under /uk)
+  pages/          Routes (en at root, Ukrainian under /ua)
   styles/         global.css — design tokens + Tailwind
 public/           Static assets (favicon, CV, OG images)
 ```

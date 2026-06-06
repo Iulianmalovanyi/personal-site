@@ -4,6 +4,17 @@ Amendments and clarifications agreed during the build. `BRIEF.md` is the
 original authoritative spec; this file records where we've consciously deviated
 or extended it. Most recent first.
 
+## 2026-06-06 (later)
+
+### i18n: Ukrainian URL path is `/ua`, language code stays `uk`
+The Ukrainian version is served under the URL path **`/ua`** (so it doesn't read
+as "United Kingdom"), but the **language code remains `uk`** — the correct ISO
+639-1 / BCP 47 tag. `ua` is a country code and must never appear in `<html lang>`
+or `hreflang`. Implemented via Astro's object locale syntax
+(`{ path: 'ua', codes: ['uk'] }`) and a path↔code map in `src/i18n/ui.ts`.
+Content folders use `ua/` to match the URL; the emitted language tag is still
+`uk`. Switcher label for Ukrainian: "УКР".
+
 ## 2026-06-06
 
 ### Workflow: local-first, no auto-push

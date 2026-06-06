@@ -3,8 +3,9 @@ import { glob } from 'astro/loaders';
 
 // Content collections are configured from the start (BRIEF.md §9 / M0).
 // Each collection stores content per locale so a page/article has an English
-// file and a Ukrainian file sharing a slug (BRIEF.md §11). The locale is the
-// top-level folder, e.g. src/content/writing/en/<slug>.mdx.
+// file and a Ukrainian file sharing a slug (BRIEF.md §11). The locale folder
+// matches the URL path: src/content/writing/en/<slug>.mdx and
+// src/content/writing/ua/<slug>.mdx (path is `ua`, language tag stays `uk`).
 // Schemas are intentionally minimal for M0 and expand in M3/M4/M5.
 
 const writing = defineCollection({
