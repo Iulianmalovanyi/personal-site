@@ -8,34 +8,32 @@ import { site } from '../../data/site';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-// TODO: verify — placeholder bio to be replaced with the author's real copy.
-// First-person, British English, honest and concise (BRIEF.md §4).
+// First-person, British English, grounded in the author's CV (§4).
 const bio: Record<typeof lang, string[]> = {
   en: [
-    'I’m a product manager working at the intersection of software and hardware. For the last few years I’ve built clinical decision-support software used by 20,000+ clinicians — regulated digital health, where a wrong call has real consequences and patient safety comes before everything else.',
-    'That work taught me to be rigorous: to care about evidence, quality systems, and the messy reality of how clinicians actually work. Now I’m extending that into connected, hardware-enabled products — learning the electronics, firmware, and lifecycle that turn software thinking into physical things.',
-    'This site is where I do that learning in public — alongside notes on the books I read, the craft of product management, and growing as a person. Honest, in progress, and improving as I go.',
+    'I’m a product manager with over four years in healthcare and software. At C the Signs I lead an AI-driven cancer decision-support platform, integrated with NHS EHR systems and used daily by more than 20,000 clinicians across roughly 30% of UK practices — regulated digital health, where quality and patient safety come before everything else.',
+    'I came to product through quality engineering. I started in QA — defining test strategy and automation from scratch — first on enterprise networking and monitoring products at SoftServe, then at C the Signs, where I was QA Lead before being promoted into product. That grounding in how systems actually break still shapes how I build them.',
+    'Now I’m extending into connected, hardware-enabled products — learning electronics, firmware, and the hardware lifecycle from the ground up. This site is where I do that learning in public, alongside notes on the books I read, the craft of product management, and growing as a person. Honest, in progress, and improving as I go.',
   ],
   uk: [
-    'Я product manager, що працює на перетині software та hardware. Останні роки я будував clinical decision-support software, яким користуються 20 000+ клініцистів — regulated digital health, де помилка має реальні наслідки, а patient safety понад усе.',
-    'Ця робота навчила мене бути ретельним: цінувати докази, quality systems і складну реальність того, як клініцисти працюють насправді. Тепер я переношу це у connected, hardware-enabled продукти — вивчаю electronics, firmware і lifecycle, що перетворюють продуктове мислення на фізичні речі.',
-    'Цей сайт — місце, де я навчаюся у відкритому форматі: разом із нотатками про книги, які читаю, про ремесло product management і про розвиток як особистості. Чесно, у процесі та з постійним покращенням.',
+    'Я product manager із понад чотирма роками досвіду в healthcare та software. У C the Signs я веду AI-driven платформу для cancer decision support, інтегровану з NHS EHR systems, якою щодня користуються понад 20 000 клініцистів приблизно у 30% практик Великої Британії — regulated digital health, де якість і patient safety понад усе.',
+    'До продукту я прийшов через quality engineering. Починав у QA — будував test strategy та автоматизацію з нуля — спершу на enterprise networking та monitoring продуктах у SoftServe, потім у C the Signs, де був QA Lead до підвищення в product. Це розуміння того, як системи ламаються насправді, досі формує те, як я їх будую.',
+    'Тепер я переходжу до connected, hardware-enabled продуктів — вивчаю electronics, firmware і hardware lifecycle з нуля. Цей сайт — місце, де я навчаюся у відкритому форматі: разом із нотатками про книги, які читаю, про ремесло product management і про розвиток як особистості. Чесно, у процесі та з постійним покращенням.',
   ],
 };
 
-// TODO: verify — placeholder skill groupings.
 const skills: { heading: Record<typeof lang, string>; items: string[] }[] = [
   {
     heading: { en: 'Product', uk: 'Product' },
-    items: ['Discovery & research', 'Roadmapping', 'Prioritisation', 'Stakeholder alignment'],
+    items: ['Product strategy', 'Roadmap planning', 'Backlog & prioritisation', 'Requirements management', 'Market & user research'],
   },
   {
-    heading: { en: 'Regulated & quality', uk: 'Regulated & quality' },
-    items: ['Medical device (UKCA)', 'ISO 27001 / DCB0129', 'GDPR / HIPAA', 'QA mindset'],
+    heading: { en: 'Leadership & delivery', uk: 'Leadership & delivery' },
+    items: ['Cross-functional leadership', 'Stakeholder management', 'Release & go-to-market', 'Success-metrics tracking', 'Data-informed decisions'],
   },
   {
-    heading: { en: 'Hardware-curious', uk: 'Hardware-curious' },
-    items: ['Electronics basics', 'Firmware & connectivity', 'Device → cloud → app', 'Lifecycle / EVT–PVT'],
+    heading: { en: 'Quality & tools', uk: 'Quality & tools' },
+    items: ['Test strategy & automation', 'Scalable QA processes', 'Agile (Scrum)', 'Jira · Confluence · Figma'],
   },
 ];
 ---
