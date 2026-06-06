@@ -169,3 +169,11 @@ export const ui = {
 
 export type UiLang = keyof typeof ui;
 export type UiKey = keyof (typeof ui)[typeof defaultLang];
+
+// --- URL path <-> language code mapping ---------------------------------
+// IMPORTANT: the Ukrainian version lives under the URL path /ua (so it doesn't
+// read as "United Kingdom"), but the LANGUAGE CODE stays `uk` — the correct
+// ISO 639-1 / BCP 47 tag for Ukrainian. `ua` is a country code and must never
+// appear in <html lang> or hreflang. English is served at the root ('').
+export const langToPath: Record<UiLang, string> = { en: '', uk: 'ua' };
+export const pathToLang: Record<string, UiLang> = { ua: 'uk' };

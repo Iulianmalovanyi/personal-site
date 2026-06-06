@@ -1,10 +1,13 @@
-import { ui, defaultLang, type UiLang, type UiKey } from './ui';
+import { ui, defaultLang, langToPath, pathToLang, type UiLang, type UiKey } from './ui';
 
-/** Extract the locale from a URL pathname (e.g. /uk/about -> 'uk'). */
+/**
+ * Extract the language CODE from a URL pathname.
+ * The URL uses path segments (e.g. /ua/about); the language code is `uk`.
+ * /ua/about -> 'uk'   /about -> 'en'
+ */
 export function getLangFromUrl(url: URL): UiLang {
-  const [, maybeLang] = url.pathname.split('/');
-  if (maybeLang in ui) return maybeLang as UiLang;
-  return defaultLang;
+  const [, maybeSeg] = url.pathname.split('/');
+  return pathToLang[maybeSeg] ?? defaultLang;
 }
 
 /** Return a translation function bound to a locale, falling back to English. */
@@ -15,15 +18,15 @@ export function useTranslations(lang: UiLang) {
 }
 
 /**
- * Split a URL into its locale and its *canonical* (English) path.
- * /uk/about -> { lang: 'uk', path: '/about' }
+ * Split a URL into its language code and its *canonical* (English) path.
+ * /ua/about -> { lang: 'uk', path: '/about' }
  * /about    -> { lang: 'en', path: '/about' }
  */
 export function getRouteParts(url: URL): { lang: UiLang; path: string } {
   const segments = url.pathname.split('/').filter(Boolean);
   let lang: UiLang = defaultLang;
-  if (segments[0] === 'uk') {
-    lang = 'uk';
+  if (segments[0] && pathToLang[segments[0]]) {
+    lang = pathToLang[segments[0]];
     segments.shift();
   }
   const path = '/' + segments.join('/');
@@ -32,14 +35,15 @@ export function getRouteParts(url: URL): { lang: UiLang; path: string } {
 
 /**
  * Map a canonical (English) path to its localised URL.
- * localizePath('/about', 'uk') -> '/uk/about'
- * localizePath('/', 'uk')      -> '/uk/'
+ * localizePath('/about', 'uk') -> '/ua/about'
+ * localizePath('/', 'uk')      -> '/ua/'
  * localizePath('/about', 'en') -> '/about'
  */
 export function localizePath(path: string, lang: UiLang): string {
   const clean = path === '/' ? '' : path.replace(/\/$/, '');
-  if (lang === defaultLang) return clean === '' ? '/' : clean;
-  return clean === '' ? '/uk/' : `/uk${clean}`;
+  const seg = langToPath[lang];
+  if (!seg) return clean === '' ? '/' : clean;
+  return clean === '' ? `/${seg}/` : `/${seg}${clean}`;
 }
 
 /** Convenience: given the current URL, the equivalent URL in the other locale. */

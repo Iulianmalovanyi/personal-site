@@ -1,1 +1,2 @@
-# Articles live here, one folder per locale: writing/en/<slug>.mdx and writing/uk/<slug>.mdx
+# Articles live here, one folder per locale: writing/en/<slug>.mdx and writing/ua/<slug>.mdx
+# (URL path is /ua; the language tag is still `uk`.)

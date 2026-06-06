@@ -6,6 +6,8 @@ const current = getLangFromUrl(Astro.url);
 const t = useTranslations(current);
 const other = current === 'en' ? 'uk' : 'en';
 const href = getAlternatePath(Astro.url, other);
+// Label: Ukrainian reads "УКР"; English reads "EN". (Code is `uk`, path is /ua.)
+const label = other === 'uk' ? 'УКР' : 'EN';
 ---
 <a
   href={href}
@@ -13,6 +15,6 @@ const href = getAlternatePath(Astro.url, other);
   aria-label={`${t('lang.switch')}: ${languages[other]}`}
   data-astro-prefetch
 >
-  <span aria-hidden="true">{other.toUpperCase()}</span>
+  <span aria-hidden="true">{label}</span>
   <span class="sr-only">{languages[other]}</span>
 </a>
