@@ -4,9 +4,7 @@ import Container from '../Container.astro';
 import Button from '../Button.astro';
 import Callout from '../Callout.astro';
 import Card from '../Card.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
-
-const t = useTranslations(getLangFromUrl(Astro.url));
+import { t } from '../../i18n/ui';
 
 const tokens = [
   { name: 'canvas', cls: 'bg-canvas border border-line' },

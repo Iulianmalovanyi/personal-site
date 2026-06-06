@@ -2,40 +2,22 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Container from '../Container.astro';
 import Button from '../Button.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { t } from '../../i18n/ui';
 import { site } from '../../data/site';
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+// Three-part personal credo (kicker, set apart from the intro).
+const epigraph = ['Clarity over comfort', 'Outcomes over output', 'Why before what'];
 
-// Three-part personal credo (§2a). Kept short and punchy in both languages.
-const epigraph: Record<typeof lang, string[]> = {
-  en: ['Clarity over comfort', 'Outcomes over output', 'Why before what'],
-  uk: ['Ясність понад комфорт', 'Результат понад обсяг', 'Спершу навіщо, тоді що'],
-};
-
-// English is the authoritative source text — kept verbatim (§2b).
-// Ukrainian translates the prose; technical/methodology terms stay in English (§11).
-const essay: Record<typeof lang, string[]> = {
-  en: [
-    'Hi, I’m Iulian — a product manager. For the past five years I’ve been building AI clinical decision-support software used daily by over 20,000 clinicians across thousands of NHS general practices to help catch cancer earlier — work that has supported the detection of tens of thousands of cancers.',
-    'Working where a single product decision can touch a patient outcome shaped how I think about the job: solve a real problem, respect the full context, and decide responsibly even when you can’t decide perfectly.',
-    'I didn’t start in product. I began in IT as a QA engineer — a deliberate choice, because I wanted to understand how technology actually gets built before trying to decide what we should build. That technical grounding still shapes how I work: I can talk to engineers in their own terms, ask sharper questions, and make more informed calls.',
-    'Roadmaps, prioritisation, discovery, stakeholder alignment — these are the craft, and every PM should be fluent in them. But they’re not the point. The real work starts when information is incomplete and priorities compete: bringing clarity, getting people around one shared outcome, and helping the team make a good decision and move. A big part of how I see the role is connecting people and perspectives — because many product problems turn out to be alignment and communication problems rather than purely technical ones.',
-    'I’d also rather ship less and change something real. What matters to me is whether the thing we built actually helped the people using it — not how much of it there was.',
-    'Right now I’m deliberately moving toward connected hardware — products where software meets the physical world. This site is where I document that journey: what I’m learning about electronics, embedded systems, and IoT, alongside notes on product, books, and the ideas I’m chewing on.',
-    'If you’re building something at that intersection — or just want to compare notes on product — I’d be glad to hear from you.',
-  ],
-  uk: [
-    'Привіт, я Юліан — product manager. Останні п’ять років я будую AI clinical decision-support software, яким щодня користуються понад 20 000 клініцистів у тисячах NHS general practices, щоб раніше виявляти рак — робота, яка допомогла виявити десятки тисяч випадків раку.',
-    'Робота там, де одне продуктове рішення може вплинути на стан пацієнта, сформувала те, як я бачу цю професію: розв’яжи реальну проблему, поважай весь контекст і ухвалюй рішення відповідально навіть тоді, коли не можеш вирішити ідеально.',
-    'Я починав не з продукту. Я почав в IT як QA engineer — свідомий вибір, бо хотів зрозуміти, як технології насправді створюються, перш ніж вирішувати, що саме нам варто будувати. Це технічне підґрунтя досі формує мою роботу: я можу говорити з інженерами їхньою мовою, ставити гостріші запитання й ухвалювати більш зважені рішення.',
-    'Roadmaps, prioritisation, discovery, stakeholder alignment — це ремесло, і кожен PM має вільно ним володіти. Але суть не в них. Справжня робота починається тоді, коли інформації бракує, а пріоритети конкурують: внести ясність, зібрати людей навколо одного спільного результату й допомогти команді ухвалити добре рішення та рухатися далі. Велика частина того, як я бачу цю роль, — це поєднувати людей і погляди, бо багато продуктових проблем виявляються проблемами alignment та комунікації, а не суто технічними.',
-    'Я також радше випущу менше, але зміню щось справжнє. Для мене важливо, чи те, що ми побудували, реально допомогло людям, які цим користуються, — а не скільки його було.',
-    'Зараз я свідомо рухаюся в бік connected hardware — продуктів, де software зустрічається з фізичним світом. Цей сайт — місце, де я документую цю подорож: що я дізнаюся про electronics, embedded systems та IoT, разом із нотатками про product, книги й ідеї, які мене зараз займають.',
-    'Якщо ти будуєш щось на цьому перетині — або просто хочеш обмінятися думками про product — буду радий почути від тебе.',
-  ],
-};
+// Verbatim author copy — do not paraphrase or reorder.
+const essay = [
+  'Hi, I’m Iulian — a product manager. For the past five years I’ve been building AI clinical decision-support software used daily by over 20,000 clinicians across thousands of NHS general practices to help catch cancer earlier — work that has supported the detection of tens of thousands of cancers.',
+  'Working where a single product decision can touch a patient outcome shaped how I think about the job: solve a real problem, respect the full context, and decide responsibly even when you can’t decide perfectly.',
+  'I didn’t start in product. I began in IT as a QA engineer — a deliberate choice, because I wanted to understand how technology actually gets built before trying to decide what we should build. That technical grounding still shapes how I work: I can talk to engineers in their own terms, ask sharper questions, and make more informed calls.',
+  'Roadmaps, prioritisation, discovery, stakeholder alignment — these are the craft, and every PM should be fluent in them. But they’re not the point. The real work starts when information is incomplete and priorities compete: bringing clarity, getting people around one shared outcome, and helping the team make a good decision and move. A big part of how I see the role is connecting people and perspectives — because many product problems turn out to be alignment and communication problems rather than purely technical ones.',
+  'I’d also rather ship less and change something real. What matters to me is whether the thing we built actually helped the people using it — not how much of it there was.',
+  'Right now I’m deliberately moving toward connected hardware — products where software meets the physical world. This site is where I document that journey: what I’m learning about electronics, embedded systems, and IoT, alongside notes on product, books, and the ideas I’m chewing on.',
+  'If you’re building something at that intersection — or just want to compare notes on product — I’d be glad to hear from you.',
+];
 ---
 <BaseLayout title={t('about.title')}>
   <Container width="prose" class="py-16">
@@ -44,7 +26,7 @@ const essay: Record<typeof lang, string[]> = {
 
     <!-- Epigraph / personal credo -->
     <p class="text-xs uppercase tracking-[0.18em] text-muted sm:text-sm" role="doc-epigraph">
-      {epigraph[lang].map((part, i) => (
+      {epigraph.map((part, i) => (
         <>
           {i > 0 && <span class="mx-1.5 text-line" aria-hidden="true">/</span>}
           <span>{part}</span>
@@ -54,8 +36,8 @@ const essay: Record<typeof lang, string[]> = {
 
     <!-- Essay (first paragraph as lead) -->
     <div class="mt-10 space-y-5 text-[1.05rem] leading-relaxed">
-      <p class="text-lead text-fg">{essay[lang][0]}</p>
-      {essay[lang].slice(1).map((para) => <p>{para}</p>)}
+      <p class="text-lead text-fg">{essay[0]}</p>
+      {essay.slice(1).map((para) => <p>{para}</p>)}
     </div>
 
     <!-- Actions -->
