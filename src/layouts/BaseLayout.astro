@@ -1,17 +1,38 @@
 ---
+// Variable fonts imported here (not via CSS @import) so Vite emits the woff2s.
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getLangFromUrl, useTranslations, getAlternatePath, getRouteParts, localizePath } from '../i18n/utils';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Relative path to an OG image (defaults to a static site image). */
+  ogImage?: string;
+  /** Set true on pages that should not be indexed. */
+  noindex?: boolean;
 }
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const { title, description = t('site.tagline') } = Astro.props;
-const pageTitle = title ? `${title} — ${t('site.title')}` : t('site.title');
+const { title, description = t('site.tagline'), ogImage = '/og-default.png', noindex = false } = Astro.props;
+const pageTitle = title ? `${title} — ${t('site.title')}` : `${t('site.title')} — ${t('site.role')}`;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url);
+
+// hreflang alternates linking the EN/UK versions of this page (§8).
+const { path } = getRouteParts(Astro.url);
+const alternates = [
+  { hreflang: 'en', href: new URL(localizePath(path, 'en'), Astro.site ?? Astro.url).href },
+  { hreflang: 'uk', href: new URL(localizePath(path, 'uk'), Astro.site ?? Astro.url).href },
+  { hreflang: 'x-default', href: new URL(localizePath(path, 'en'), Astro.site ?? Astro.url).href },
+];
 ---
 
 <!doctype html>
@@ -21,10 +42,56 @@ const pageTitle = title ? `${title} — ${t('site.title')}` : t('site.title');
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t('site.title')} />
+    <meta property="og:locale" content={lang === 'uk' ? 'uk_UA' : 'en_GB'} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImageUrl.href} />
+
+    <!-- Twitter / X card (LinkedIn also reads OG) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl.href} />
+
+    <link rel="alternate" type="application/rss+xml" title={t('site.title')} href={localizePath('/writing/rss.xml', lang)} />
+
+    <!-- Set the theme before paint to avoid a flash (FOUC). -->
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem('theme');
+          const theme = stored
+            ? stored
+            : matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+          document.documentElement.dataset.theme = theme;
+        } catch {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
   </head>
-  <body>
-    <slot />
+  <body class="flex min-h-screen flex-col">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-fg focus:px-4 focus:py-2 focus:text-canvas">
+      {t('nav.skip')}
+    </a>
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

@@ -1,0 +1,32 @@
+---
+import Container from './Container.astro';
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// TODO: confirm real handles/links before going live.
+const links = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/iulianmalovanyi/' },
+  { label: 'GitHub', href: 'https://github.com/Iulianmalovanyi' },
+  { label: t('footer.email'), href: 'mailto:hello@example.com' },
+  { label: t('footer.rss'), href: localizePath('/writing/rss.xml', lang) },
+];
+---
+<footer class="mt-24 border-t border-line/70">
+  <Container width="wide" class="flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="font-display text-base font-semibold">{t('site.title')}</p>
+      <p class="mt-1 text-sm text-muted">© 2026 · {t('footer.rights')}</p>
+    </div>
+    <nav aria-label={t('footer.connect')}>
+      <ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        {links.map((l) => (
+          <li>
+            <a href={l.href} class="link-underline text-fg/80">{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </Container>
+</footer>
