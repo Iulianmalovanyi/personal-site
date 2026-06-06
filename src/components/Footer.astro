@@ -1,15 +1,15 @@
 ---
 import Container from './Container.astro';
 import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+import { site } from '../data/site';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-// TODO: confirm real handles/links before going live.
 const links = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/iulianmalovanyi/' },
-  { label: 'GitHub', href: 'https://github.com/Iulianmalovanyi' },
-  { label: t('footer.email'), href: 'mailto:hello@example.com' },
+  { label: 'LinkedIn', href: site.linkedin },
+  { label: 'GitHub', href: site.github },
+  { label: t('footer.email'), href: `mailto:${site.email}` },
   { label: t('footer.rss'), href: localizePath('/writing/rss.xml', lang) },
 ];
 ---

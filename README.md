@@ -1,8 +1,9 @@
 # Iulian Malovanyi — Personal Site
 
-Personal website, portfolio, and a learning-in-public hub for robotics &
-electronics. Built with **Astro + Tailwind + MDX**, bilingual (English default,
-Ukrainian under `/uk`).
+Personal website, portfolio, and a learning-in-public hub covering product
+management, reading/book notes, robotics & electronics, and personal growth.
+Built with **Astro + Tailwind + MDX**, bilingual (English default, Ukrainian
+under `/uk`).
 
 > The authoritative spec for this project is [`BRIEF.md`](./BRIEF.md). Read it
 > before making changes.
