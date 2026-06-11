@@ -15,9 +15,11 @@ interface Props {
   ogImage?: string;
   /** Set true on pages that should not be indexed. */
   noindex?: boolean;
+  /** Document language. Defaults to English; Ukrainian lesson pages pass 'uk'. */
+  lang?: 'en' | 'uk';
 }
 
-const { title, description = t('site.tagline'), ogImage = '/og-default.png', noindex = false } = Astro.props;
+const { title, description = t('site.tagline'), ogImage = '/og-default.png', noindex = false, lang = 'en' } = Astro.props;
 const pageTitle = title ? `${title} — ${t('site.title')}` : `${t('site.title')} — ${t('site.role')}`;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
@@ -25,7 +27,7 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -40,7 +42,7 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url);
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={t('site.title')} />
-    <meta property="og:locale" content="en_GB" />
+    <meta property="og:locale" content={lang === 'uk' ? 'uk_UA' : 'en_GB'} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical.href} />

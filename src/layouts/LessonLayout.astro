@@ -22,40 +22,70 @@ interface Props {
   resources?: { label: string; url?: string }[];
   prev?: NavItem | null;
   next?: NavItem | null;
+  /** Language of this lesson page. */
+  lang?: 'en' | 'uk';
+  /** Canonical English URL of this lesson (for the language switcher). */
+  enUrl?: string;
+  /** Ukrainian-version URL of this lesson (path uses /ua), or null if none. */
+  uaUrl?: string | null;
 }
 const {
   title, summary, topic, lessonNumber, lessonTotal, minutes,
   objective, why, keyPoints = [], keyTerms = [], check = [], resources = [],
-  prev = null, next = null,
+  prev = null, next = null, lang = 'en', enUrl, uaUrl = null,
 } = Astro.props;
+
+const L = {
+  en: {
+    hub: 'Learning Hub', lessonOf: 'Lesson', of: 'of', min: 'min read',
+    objective: 'Learning objective', why: 'Why it matters for a PM', inShort: 'In short',
+    keyTerms: 'Key terms', check: 'Check yourself', resources: 'Resources',
+    prev: 'Previous', next: 'Next',
+  },
+  uk: {
+    hub: 'Навчальний хаб', lessonOf: 'Урок', of: 'з', min: 'хв читання',
+    objective: 'Мета уроку', why: 'Чому це важливо для PM', inShort: 'Коротко',
+    keyTerms: 'Ключові терміни', check: 'Перевірте себе', resources: 'Ресурси',
+    prev: 'Попередній', next: 'Наступний',
+  },
+}[lang];
+
+const showSwitcher = Boolean(uaUrl);
 ---
-<BaseLayout title={title} description={summary}>
+<BaseLayout title={title} description={summary} lang={lang}>
   <!-- reading progress bar -->
   <div id="reading-bar" class="fixed left-0 top-0 z-[60] h-0.5 w-0 bg-accent" aria-hidden="true"></div>
 
   <Container width="prose" class="py-12 sm:py-16">
-    <!-- Breadcrumb / where this sits -->
-    <nav class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted" aria-label="Breadcrumb">
-      <a href="/learn" class="link-underline">Learning Hub</a>
-      <span aria-hidden="true">/</span>
-      <a href={`/learn/${topic.slug}`} class="link-underline">{topic.title}</a>
-    </nav>
+    <!-- Top row: breadcrumb + language switcher -->
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <nav class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted" aria-label="Breadcrumb">
+        <a href="/learn" class="link-underline">{L.hub}</a>
+        <span aria-hidden="true">/</span>
+        <a href={`/learn/${topic.slug}`} class="link-underline">{topic.title}</a>
+      </nav>
+      {showSwitcher && (
+        <div class="inline-flex overflow-hidden rounded-[var(--radius-pill)] border border-line text-xs font-medium" aria-label="Language">
+          <a href={enUrl} aria-current={lang === 'en' ? 'true' : undefined}
+            class:list={['px-3 py-1.5', lang === 'en' ? 'bg-accent text-on-accent' : 'text-fg/70 hover:text-accent']}>EN</a>
+          <a href={uaUrl} aria-current={lang === 'uk' ? 'true' : undefined}
+            class:list={['px-3 py-1.5', lang === 'uk' ? 'bg-accent text-on-accent' : 'text-fg/70 hover:text-accent']}>УКР</a>
+        </div>
+      )}
+    </div>
+
     <p class="mt-3 text-sm font-medium uppercase tracking-wider text-accent">
-      Lesson {lessonNumber} of {lessonTotal} · {minutes} min read
+      {L.lessonOf} {lessonNumber} {L.of} {lessonTotal} · {minutes} {L.min}
     </p>
 
     <h1 class="mt-2 text-h1">{title}</h1>
 
-    <!-- Learning objective -->
-    <Callout type="info" title="Learning objective"><p>{objective}</p></Callout>
+    <Callout type="info" title={L.objective}><p>{objective}</p></Callout>
+    <Callout type="pm" title={L.why}><p>{why}</p></Callout>
 
-    <!-- Why it matters for a PM -->
-    <Callout type="pm" title="Why it matters for a PM"><p>{why}</p></Callout>
-
-    <!-- In short: scannable key points -->
     {keyPoints.length > 0 && (
       <div class="mt-6 rounded-[var(--radius-card)] border border-line bg-surface-2/50 px-5 py-4">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted">In short</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted">{L.inShort}</p>
         <ul class="mt-2.5 space-y-2">
           {keyPoints.map((p) => (
             <li class="flex gap-2.5 text-[0.97rem] leading-relaxed text-fg/90">
@@ -66,15 +96,13 @@ const {
       </div>
     )}
 
-    <!-- The concept (MDX body: prose + diagrams) -->
     <article class="lesson-prose mt-8">
       <slot />
     </article>
 
-    <!-- Key terms -->
     {keyTerms.length > 0 && (
       <section class="mt-10">
-        <h2 class="text-h3">Key terms</h2>
+        <h2 class="text-h3">{L.keyTerms}</h2>
         <dl class="mt-3 space-y-2.5">
           {keyTerms.map((k) => (
             <div class="text-[0.97rem] leading-relaxed">
@@ -86,10 +114,9 @@ const {
       </section>
     )}
 
-    <!-- Check yourself -->
     {check.length > 0 && (
       <section class="mt-10">
-        <h2 class="text-h3">Check yourself</h2>
+        <h2 class="text-h3">{L.check}</h2>
         <div class="mt-3 space-y-2.5">
           {check.map((c) => (
             <details class="group rounded-[var(--radius-card)] border border-line bg-surface px-4 py-3">
@@ -103,10 +130,9 @@ const {
       </section>
     )}
 
-    <!-- Resources -->
     {resources.length > 0 && (
       <section class="mt-10">
-        <h2 class="text-h3">Resources</h2>
+        <h2 class="text-h3">{L.resources}</h2>
         <ul class="mt-3 space-y-1.5">
           {resources.map((r) => (
             <li>
@@ -119,17 +145,16 @@ const {
       </section>
     )}
 
-    <!-- Prev / Next -->
     <nav class="mt-10 grid gap-3 border-t border-line pt-8 sm:grid-cols-2" aria-label="Lesson navigation">
       {prev ? (
         <a href={prev.href} class="rounded-[var(--radius-card)] border border-line bg-surface p-4 transition-colors hover:border-accent/40">
-          <span class="text-xs uppercase tracking-wider text-muted">← Previous</span>
+          <span class="text-xs uppercase tracking-wider text-muted">← {L.prev}</span>
           <span class="mt-1 block font-medium">{prev.title}</span>
         </a>
       ) : <span></span>}
       {next ? (
         <a href={next.href} class="rounded-[var(--radius-card)] border border-line bg-surface p-4 text-right transition-colors hover:border-accent/40 sm:text-right">
-          <span class="text-xs uppercase tracking-wider text-muted">Next →</span>
+          <span class="text-xs uppercase tracking-wider text-muted">{L.next} →</span>
           <span class="mt-1 block font-medium">{next.title}</span>
         </a>
       ) : <span></span>}
@@ -169,6 +194,10 @@ const {
   onScroll();
 
   // Click any diagram to open it large (vector → crisp + readable labels)
+  const uk = document.documentElement.lang === 'uk';
+  const hintText = uk ? '⤢ Натисніть, щоб збільшити' : '⤢ Click to enlarge';
+  const enlargeLabel = uk ? 'Збільшити схему' : 'Enlarge diagram';
+
   const overlay = document.getElementById('diagram-zoom');
   const zoomBody = document.getElementById('diagram-zoom-body');
   const zoomClose = document.getElementById('diagram-zoom-close');
@@ -205,7 +234,7 @@ const {
     box.classList.add('cursor-zoom-in');
     box.setAttribute('role', 'button');
     box.setAttribute('tabindex', '0');
-    box.setAttribute('aria-label', 'Enlarge diagram');
+    box.setAttribute('aria-label', enlargeLabel);
     const act = () => openZoom(svg as unknown as SVGElement);
     box.addEventListener('click', act);
     box.addEventListener('keydown', (e) => {
@@ -213,7 +242,7 @@ const {
     });
     const hint = document.createElement('p');
     hint.className = 'mt-1.5 text-xs text-muted';
-    hint.textContent = '⤢ Click to enlarge';
+    hint.textContent = hintText;
     fig.appendChild(hint);
   });
 </script>

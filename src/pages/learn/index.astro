@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Container from '../../components/Container.astro';
 import { topics } from '../../data/topics';
 
-const allLessons = (await getCollection('lessons')).filter((l) => !l.data.draft);
+const allLessons = (await getCollection('lessons')).filter((l) => !l.data.draft && !l.id.endsWith('-ua'));
 const idsByTopic = (slug: string) =>
   allLessons.filter((l) => l.id.split('/')[0] === slug).map((l) => l.id);
 

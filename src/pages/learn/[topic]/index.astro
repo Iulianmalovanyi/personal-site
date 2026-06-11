@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 const { topic } = Astro.props;
 
 const lessons = (await getCollection('lessons'))
-  .filter((l) => !l.data.draft && l.id.split('/')[0] === topic.slug)
+  .filter((l) => !l.data.draft && !l.id.endsWith('-ua') && l.id.split('/')[0] === topic.slug)
   .sort((a, b) => a.data.order - b.data.order);
 ---
 <BaseLayout title={`${topic.title} — Learning Hub`} description={topic.blurb}>
