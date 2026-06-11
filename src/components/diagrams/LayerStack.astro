@@ -1,0 +1,42 @@
+---
+// The layer-stack model of a connected product (BRIEF.md §7). Change cost rises
+// and cadence slows as you go down — encoded by the deepening accent tab.
+interface Props {
+  caption?: string;
+}
+const { caption } = Astro.props;
+const layers = [
+  { name: 'App — mobile / web', note: 'ships in days' },
+  { name: 'Cloud / backend / device management', note: 'continuous' },
+  { name: 'Firmware / embedded software', note: 'careful, via OTA' },
+  { name: 'Electronics — MCU, sensors, PCB, power', note: 'respin = weeks + $' },
+  { name: 'Mechanical / enclosure', note: 'tooling = months + $$' },
+];
+const h = 50;
+const gap = 14;
+const y = (i: number) => 24 + i * (h + gap);
+---
+<figure class="my-7">
+  <div class="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-surface p-4">
+    <svg viewBox="0 0 780 350" class="block h-auto w-full min-w-[560px]" role="img"
+      aria-label="A connected product as five layers, top to bottom: app, cloud, firmware, electronics, mechanical. Change cost rises and cadence slows toward the bottom.">
+      <!-- change-cost arrow -->
+      <g class="text-accent">
+        <line x1="16" y1={y(0) + 6} x2="16" y2={y(4) + h - 6} stroke="currentColor" stroke-width="2" />
+        <path d={`M16 ${y(4) + h - 6} l-5 -10 h10 z`} fill="currentColor" transform={`rotate(180 16 ${y(4) + h - 6})`} />
+      </g>
+      <text x="30" y={y(2) + 30} fill="currentColor" class="text-muted" font-size="11" font-weight="600"
+        transform={`rotate(90 30 ${y(2) + 30})`} text-anchor="middle">change cost · lead time</text>
+
+      {layers.map((l, i) => (
+        <g>
+          <rect x="44" y={y(i)} width="470" height={h} rx="8" class="text-line" fill="var(--color-surface-2)" stroke="currentColor" stroke-width="1" />
+          <rect x="44" y={y(i)} width="9" height={h} rx="4" class="text-accent" fill="currentColor" opacity={0.25 + i * 0.185} />
+          <text x="70" y={y(i) + h / 2 + 5} class="text-fg" fill="currentColor" font-size="14" font-weight="600">{l.name}</text>
+          <text x="528" y={y(i) + h / 2 + 4} class="text-muted" fill="currentColor" font-size="12">{l.note}</text>
+        </g>
+      ))}
+    </svg>
+  </div>
+  {caption && <figcaption class="mt-2 text-sm text-muted">{caption}</figcaption>}
+</figure>

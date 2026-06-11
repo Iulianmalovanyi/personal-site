@@ -1,0 +1,64 @@
+---
+title: "A connected product is a stack of layers"
+order: 1
+objective: "After this lesson you'll be able to name the five layers of a connected product and explain the one rule that ties them together: change cost rises and cadence slows as you go down the stack."
+why: "This is the frame every other hardware conversation hangs on. Once you see the stack you can tell which team owns a problem, how reversible a change is, and in what order to de-risk — which is most of thinking like a hardware PM."
+keyPoints:
+  - "A connected product is five stacked layers: app → cloud → firmware → electronics → mechanical."
+  - "Each layer is owned by a different team and moves at a different speed."
+  - "The rule: change cost rises and cadence slows as you go down — the app ships Friday; the enclosure is frozen once tooling is cut."
+  - "So a hardware PM de-risks the slow, expensive bottom layers first — the opposite of software's defer-and-iterate."
+summary: "The five-layer model of a connected product, and the single rule — change cost rises and cadence slows down the stack — that drives how a PM sequences decisions."
+keyTerms:
+  - term: "MCU"
+    definition: "Microcontroller — the small computer chip on the device that runs the firmware and controls the electronics."
+  - term: "Firmware"
+    definition: "The software that runs on the device itself (not in the cloud or the app). Updatable, but carefully — a bad update can disable the device."
+  - term: "Cadence"
+    definition: "How often a layer changes. The app layer has a fast cadence (days); the mechanical layer a very slow one (years)."
+  - term: "Respin"
+    definition: "Making a new version of the electronics, e.g. a redesigned circuit board. It costs weeks and money — there's no quick fix."
+check:
+  - q: "A teammate says 'let's just change the enclosure in the next sprint.' Why is that a red flag?"
+    a: "The enclosure is the slowest, most expensive layer — frozen once tooling is cut. It can't change in a sprint; a change means new tooling, months and serious money. Enclosure decisions have to be right early."
+  - q: "Why does the layer model change the order in which a hardware PM makes decisions?"
+    a: "Because the bottom layers cost the most to change and take the longest. You de-risk them first instead of deferring, so you don't get trapped by a slow, expensive decision late in the project."
+resources:
+  - label: "The Hardware Startup (O'Reilly) — the connected-product overview"
+  - label: "Internet of things — overview"
+    url: "https://en.wikipedia.org/wiki/Internet_of_things"
+---
+import LayerStack from '../../../components/diagrams/LayerStack.astro';
+
+A connected product isn't one thing — it's a **stack of layers**, each built by a different team, each changing at a different speed. Internalise this picture and almost everything else about hardware falls into place.
+
+## The five layers
+
+<LayerStack caption="Five layers, top to bottom. Each is owned by a different team — and the deeper you go, the more a change costs and the slower it moves." />
+
+From the user inward:
+
+- **App (mobile / web)** — what the user taps. Pure software; ships in days.
+- **Cloud / backend** — stores state, manages the fleet of devices, runs analytics, pushes updates.
+- **Firmware / embedded** — the software that runs *on the device*. Updatable over the air, but carefully.
+- **Electronics** — the physical brains: the **MCU** (microcontroller), sensors, the circuit board, power.
+- **Mechanical / enclosure** — the case and physical form. Locked in once the factory tooling is cut.
+
+## The one rule worth memorising
+
+> **Change cost rises, and cadence slows, as you go down the stack.**
+
+- The **app** team can ship on a Friday afternoon.
+- The **firmware** team ships cautiously — a bad over-the-air update can disable thousands of devices at once.
+- The **electronics** can't change at all after the board is made without a **respin** — weeks and money.
+- The **mechanical** layer is frozen once tooling is cut — months and serious money.
+
+## What it changes for a PM
+
+This single rule does a lot of work:
+
+- **It tells you who owns a problem.** "The reading is wrong" could live in any layer — knowing the stack tells you where to look.
+- **It tells you how reversible a decision is.** A software choice is cheap to revisit; a mechanical one is essentially permanent.
+- **It tells you the order to work in.** You de-risk the slow, expensive bottom layers *first* — the opposite of the software reflex to defer and iterate.
+
+Keep this stack in your head and the next lesson — how data actually moves through it — will feel obvious.

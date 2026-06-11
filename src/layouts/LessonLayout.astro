@@ -1,0 +1,248 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Callout from '../components/Callout.astro';
+
+interface NavItem {
+  href: string;
+  title: string;
+}
+interface Props {
+  title: string;
+  summary: string;
+  topic: { slug: string; title: string };
+  lessonNumber: number;
+  lessonTotal: number;
+  minutes: number;
+  objective: string;
+  why: string;
+  keyPoints?: string[];
+  keyTerms?: { term: string; definition: string }[];
+  check?: { q: string; a: string }[];
+  resources?: { label: string; url?: string }[];
+  prev?: NavItem | null;
+  next?: NavItem | null;
+  /** Language of this lesson page. */
+  lang?: 'en' | 'ua';
+  /** Canonical English URL of this lesson (for the language switcher). */
+  enUrl?: string;
+  /** Ukrainian-version URL of this lesson (path uses /ua), or null if none. */
+  uaUrl?: string | null;
+}
+const {
+  title, summary, topic, lessonNumber, lessonTotal, minutes,
+  objective, why, keyPoints = [], keyTerms = [], check = [], resources = [],
+  prev = null, next = null, lang = 'en', enUrl, uaUrl = null,
+} = Astro.props;
+
+const L = {
+  en: {
+    hub: 'Learning Hub', lessonOf: 'Lesson', of: 'of', min: 'min read',
+    objective: 'Learning objective', why: 'Why it matters for a PM', inShort: 'In short',
+    keyTerms: 'Key terms', check: 'Check yourself', resources: 'Resources',
+    prev: 'Previous', next: 'Next',
+  },
+  ua: {
+    hub: 'Навчальний хаб', lessonOf: 'Урок', of: 'з', min: 'хв читання',
+    objective: 'Мета уроку', why: 'Чому це важливо для PM', inShort: 'Коротко',
+    keyTerms: 'Ключові терміни', check: 'Перевірте себе', resources: 'Ресурси',
+    prev: 'Попередній', next: 'Наступний',
+  },
+}[lang];
+
+const showSwitcher = Boolean(uaUrl);
+---
+<BaseLayout title={title} description={summary} lang={lang}>
+  <!-- reading progress bar -->
+  <div id="reading-bar" class="fixed left-0 top-0 z-[60] h-0.5 w-0 bg-accent" aria-hidden="true"></div>
+
+  <Container width="prose" class="py-12 sm:py-16">
+    <!-- Top row: breadcrumb + language switcher -->
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <nav class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted" aria-label="Breadcrumb">
+        <a href="/learn" class="link-underline">{L.hub}</a>
+        <span aria-hidden="true">/</span>
+        <a href={`/learn/${topic.slug}`} class="link-underline">{topic.title}</a>
+      </nav>
+      {showSwitcher && (
+        <div class="inline-flex overflow-hidden rounded-[var(--radius-pill)] border border-line text-xs font-medium" aria-label="Language">
+          <a href={enUrl} aria-current={lang === 'en' ? 'true' : undefined}
+            class:list={['px-3 py-1.5', lang === 'en' ? 'bg-accent text-on-accent' : 'text-fg/70 hover:text-accent']}>EN</a>
+          <a href={uaUrl} aria-current={lang === 'ua' ? 'true' : undefined}
+            class:list={['px-3 py-1.5', lang === 'ua' ? 'bg-accent text-on-accent' : 'text-fg/70 hover:text-accent']}>УКР</a>
+        </div>
+      )}
+    </div>
+
+    <p class="mt-3 text-sm font-medium uppercase tracking-wider text-accent">
+      {L.lessonOf} {lessonNumber} {L.of} {lessonTotal} · {minutes} {L.min}
+    </p>
+
+    <h1 class="mt-2 text-h1">{title}</h1>
+
+    <Callout type="info" title={L.objective}><p>{objective}</p></Callout>
+    <Callout type="pm" title={L.why}><p>{why}</p></Callout>
+
+    {keyPoints.length > 0 && (
+      <div class="mt-6 rounded-[var(--radius-card)] border border-line bg-surface-2/50 px-5 py-4">
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted">{L.inShort}</p>
+        <ul class="mt-2.5 space-y-2">
+          {keyPoints.map((p) => (
+            <li class="flex gap-2.5 text-[0.97rem] leading-relaxed text-fg/90">
+              <span class="mt-1 text-accent" aria-hidden="true">▪</span><span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    <article class="lesson-prose mt-8">
+      <slot />
+    </article>
+
+    {keyTerms.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-h3">{L.keyTerms}</h2>
+        <dl class="mt-3 space-y-2.5">
+          {keyTerms.map((k) => (
+            <div class="text-[0.97rem] leading-relaxed">
+              <dt class="inline rounded-[var(--radius-pill)] bg-surface-2 px-2 py-0.5 font-mono text-[0.85em] font-medium text-accent">{k.term}</dt>
+              <dd class="mt-1 text-fg/85">{k.definition}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )}
+
+    {check.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-h3">{L.check}</h2>
+        <div class="mt-3 space-y-2.5">
+          {check.map((c) => (
+            <details class="group rounded-[var(--radius-card)] border border-line bg-surface px-4 py-3">
+              <summary class="cursor-pointer list-none font-medium marker:hidden [&::-webkit-details-marker]:hidden">
+                <span class="text-accent" aria-hidden="true">Q.</span> {c.q}
+              </summary>
+              <p class="mt-2 text-fg/85">{c.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {resources.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-h3">{L.resources}</h2>
+        <ul class="mt-3 space-y-1.5">
+          {resources.map((r) => (
+            <li>
+              {r.url
+                ? <a href={r.url} target="_blank" rel="noopener noreferrer" class="link-underline text-fg/85">{r.label} <span aria-hidden="true">↗</span></a>
+                : <span class="text-fg/85">{r.label}</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <nav class="mt-10 grid gap-3 border-t border-line pt-8 sm:grid-cols-2" aria-label="Lesson navigation">
+      {prev ? (
+        <a href={prev.href} class="rounded-[var(--radius-card)] border border-line bg-surface p-4 transition-colors hover:border-accent/40">
+          <span class="text-xs uppercase tracking-wider text-muted">← {L.prev}</span>
+          <span class="mt-1 block font-medium">{prev.title}</span>
+        </a>
+      ) : <span></span>}
+      {next ? (
+        <a href={next.href} class="rounded-[var(--radius-card)] border border-line bg-surface p-4 text-right transition-colors hover:border-accent/40 sm:text-right">
+          <span class="text-xs uppercase tracking-wider text-muted">{L.next} →</span>
+          <span class="mt-1 block font-medium">{next.title}</span>
+        </a>
+      ) : <span></span>}
+    </nav>
+  </Container>
+
+  <!-- Diagram zoom overlay -->
+  <div
+    id="diagram-zoom"
+    class="fixed inset-0 z-[80] hidden items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Enlarged diagram"
+  >
+    <div class="relative max-h-[92vh] w-full max-w-6xl overflow-auto rounded-[var(--radius-card)] border border-line bg-canvas p-4 sm:p-6">
+      <button
+        id="diagram-zoom-close"
+        type="button"
+        aria-label="Close"
+        class="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-[var(--radius-pill)] border border-line bg-surface text-fg/70 transition-colors hover:text-accent"
+      >✕</button>
+      <div id="diagram-zoom-body" class="mt-2"></div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Reading-position bar (reflects scroll position, not completion)
+  const bar = document.getElementById('reading-bar');
+  const onScroll = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    if (bar) bar.style.width = pct + '%';
+  };
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Click any diagram to open it large (vector → crisp + readable labels)
+  const ua = document.documentElement.lang === 'ua';
+  const hintText = ua ? '⤢ Натисніть, щоб збільшити' : '⤢ Click to enlarge';
+  const enlargeLabel = ua ? 'Збільшити схему' : 'Enlarge diagram';
+
+  const overlay = document.getElementById('diagram-zoom');
+  const zoomBody = document.getElementById('diagram-zoom-body');
+  const zoomClose = document.getElementById('diagram-zoom-close');
+  let lastFocus: HTMLElement | null = null;
+  const openZoom = (svg: SVGElement) => {
+    if (!overlay || !zoomBody) return;
+    const clone = svg.cloneNode(true) as SVGElement;
+    clone.removeAttribute('class');
+    clone.style.width = '100%';
+    clone.style.height = 'auto';
+    clone.style.maxHeight = '82vh';
+    zoomBody.replaceChildren(clone);
+    lastFocus = document.activeElement as HTMLElement;
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
+    zoomClose?.focus();
+  };
+  const closeZoom = () => {
+    if (!overlay || !zoomBody) return;
+    overlay.classList.add('hidden');
+    overlay.classList.remove('flex');
+    zoomBody.replaceChildren();
+    lastFocus?.focus();
+  };
+  zoomClose?.addEventListener('click', closeZoom);
+  overlay?.addEventListener('click', (e) => { if (e.target === overlay) closeZoom(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay && !overlay.classList.contains('hidden')) closeZoom();
+  });
+  document.querySelectorAll<HTMLElement>('.lesson-prose figure').forEach((fig) => {
+    const svg = fig.querySelector('svg');
+    const box = fig.querySelector<HTMLElement>(':scope > div');
+    if (!svg || !box) return;
+    box.classList.add('cursor-zoom-in');
+    box.setAttribute('role', 'button');
+    box.setAttribute('tabindex', '0');
+    box.setAttribute('aria-label', enlargeLabel);
+    const act = () => openZoom(svg as unknown as SVGElement);
+    box.addEventListener('click', act);
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); act(); }
+    });
+    const hint = document.createElement('p');
+    hint.className = 'mt-1.5 text-xs text-muted';
+    hint.textContent = hintText;
+    fig.appendChild(hint);
+  });
+</script>

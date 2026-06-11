@@ -1,0 +1,70 @@
+---
+title: "The shape of a hardware product's life"
+order: 1
+objective: "After this lesson you'll be able to name the stages a physical product moves through from idea to retirement, and explain why hardware front-loads its hardest decisions."
+why: "Hardware schedules, budgets and risk are organised around a fixed sequence of gates. Once you can see that shape, you know where the real cost and risk sit — and you stop deferring decisions the way software lets you."
+summary: "The stages every physical product moves through, the gates between them, and why hardware front-loads risk instead of deferring it."
+keyPoints:
+  - "A physical product moves through a fixed sequence of stages, mostly in order — each harder to undo than the last."
+  - "Between stages sit go/no-go gates; passing one commits real money and lead time."
+  - "Change is expensive and often irreversible, lead times dominate the schedule, and cash goes out before any product comes in."
+  - "So hardware front-loads de-risking — the opposite of software's 'defer and iterate'."
+keyTerms:
+  - term: "Stage gate"
+    definition: "A go/no-go checkpoint between phases where the team decides whether the product is ready — and funded — to move on. Passing one usually commits real money and time."
+  - term: "Lead time"
+    definition: "The wait between ordering something (components, tooling, a test slot) and receiving it. In hardware it's measured in weeks or months, and these waits stack up."
+  - term: "Critical path"
+    definition: "The chain of dependent steps that sets the soonest you can possibly finish. In hardware it's physical and crosses many disciplines, so you can't sprint your way out of it."
+check:
+  - q: "Why can't you treat an early hardware decision the way you'd treat an early software decision?"
+    a: "Because hardware decisions lock in physically — a fabricated board or a cut mould can't be hotfixed. Reversing a choice late means re-spending money and waiting out lead times again, so hardware front-loads its de-risking."
+  - q: "What does a 'gate' actually decide?"
+    a: "Whether the product is good enough to move into the next, more expensive phase. It's a go/no-go decision, not just a date on a calendar."
+resources:
+  - label: "The Hardware Startup (DiResta, Forrest & Vinyard, O'Reilly) — the single best business-of-hardware overview"
+  - label: "New product development — overview"
+    url: "https://en.wikipedia.org/wiki/New_product_development"
+---
+import LifecycleTimeline from '../../../components/diagrams/LifecycleTimeline.astro';
+import CostOfChange from '../../../components/diagrams/CostOfChange.astro';
+
+A software product can feel like it has no fixed shape — you ship, learn, and ship again, often the same day. A physical product is different. It moves through a **fixed sequence of stages**, mostly in order, and each one is harder and more expensive to undo than the last. Learning that sequence is the single most useful map you can carry into a hardware conversation.
+
+## From idea to retirement
+
+Almost every connected product walks the same path. It helps to group it into three acts:
+
+- **Define & design** — figure out what to build, what it should cost, how it looks, and how all the parts (electronics, software, mechanics) fit together.
+- **Validate** — build real prototypes and prove, in stages, that the design *works*, *meets its spec and passes certification*, and *can actually be manufactured*.
+- **Make & support** — ramp up volume production, keep the product healthy in the field, and eventually retire it.
+
+<LifecycleTimeline caption="The hardware product lifecycle. Each dot is a stage; moving right means more committed money and less room to change your mind." />
+
+You'll meet the individual stage names — and the famous acronyms **EVT, DVT, PVT** — in the next two lessons. For now, the shape is the point.
+
+## A gate between every stage
+
+Between stages sits a **stage gate**: a checkpoint where the team asks "is this good enough to move on?" A gate isn't a calendar date — it's a *go/no-go decision*. Passing it usually unlocks the next, more expensive commitment: ordering long-lead components, cutting tooling, booking a certification lab.
+
+That makes gates the natural place for a PM to do their highest-value work: holding the line on requirements, deciding what's good enough, and choosing — deliberately — when to spend the next chunk of money and time.
+
+## Why hardware front-loads its hardest decisions
+
+In software, you can defer decisions cheaply: build a bit, learn, change it. Hardware punishes that instinct for three reasons:
+
+- **Change is expensive and often irreversible.** There's no hotfix for a fabricated circuit board or a cut steel mould. Decisions lock in early and hard.
+- **Lead times dominate the schedule.** Components, board fabrication, tooling and certification each take weeks to months, and they run in series — one waits for the next. That chain is your **critical path**, and you can't compress it by working harder.
+- **Money goes out before any product comes in.** Much of the cost is spent up front, long before the first unit ships.
+
+Put together, this flips the software habit on its head: instead of deferring decisions until you have more information, you **front-load the de-risking** — you spend effort early to retire the scariest unknowns *before* they get expensive to fix.
+
+<CostOfChange caption="The same idea as a curve. A change that's trivial during design becomes expensive in production and near-impossible once units are in customers' hands." />
+
+**A concrete example.** Suppose you under-spec the antenna to shave a few cents off the cost. Catch it *during design* and the fix is an afternoon's rework. Catch it after the board is fabricated (EVT) and it's a **respin** — weeks and money. Catch it after certification (DVT) and changing the radio can force you to re-test for compliance. And once thousands of units have shipped, you can't fix the antenna at all — only design a new revision and leave the field units as they are. The *same decision* costs wildly different amounts depending on when you confront it. Front-loading just means confronting it while it's still cheap.
+
+## What this means for you as a PM
+
+You don't need to design the circuit or run the factory. You need to know *where you are on this timeline*, *what the next gate commits you to*, and *which risks must be killed before that gate* — so the team spends its money and its precious lead time on the right things, in the right order.
+
+The rest of this topic walks the timeline stage by stage, then ends with the cost-and-manufacturing vocabulary that sits underneath all of it.

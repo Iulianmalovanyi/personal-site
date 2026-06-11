@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from 'astro:content';
+import LessonLayout from '../../../../layouts/LessonLayout.astro';
+
+// Ukrainian topic titles (only topics with a translation need an entry).
+// Note: the URL path is /ua, but the language code stays `uk`.
+const uaTopicTitles: Record<string, string> = {
+  'hardware-lifecycle': 'Життєвий цикл хардвер-продукту',
+};
+
+export async function getStaticPaths() {
+  const ua = (await getCollection('lessons')).filter((l) => !l.data.draft && l.id.endsWith('-ua'));
+  return ua.map((entry) => {
+    const topicSlug = entry.id.split('/')[0];
+    const baseId = entry.id.replace(/-ua$/, '');
+    const lessonSlug = baseId.split('/').slice(1).join('/');
+    const siblings = ua
+      .filter((e) => e.id.split('/')[0] === topicSlug)
+      .sort((a, b) => a.data.order - b.data.order);
+    const idx = siblings.findIndex((e) => e.id === entry.id);
+    const toHref = (e: (typeof siblings)[number]) =>
+      `/learn/${topicSlug}/${e.id.replace(/-ua$/, '').split('/').slice(1).join('/')}/ua`;
+    return {
+      params: { topic: topicSlug, lesson: lessonSlug },
+      props: {
+        entry,
+        topicSlug,
+        lessonNumber: idx + 1,
+        lessonTotal: siblings.length,
+        prev: idx > 0 ? { href: toHref(siblings[idx - 1]), title: siblings[idx - 1].data.title } : null,
+        next: idx < siblings.length - 1 ? { href: toHref(siblings[idx + 1]), title: siblings[idx + 1].data.title } : null,
+      },
+    };
+  });
+}
+
+const { entry, topicSlug, lessonNumber, lessonTotal, prev, next } = Astro.props;
+const topicTitle = uaTopicTitles[topicSlug] ?? topicSlug;
+const { Content } = await render(entry);
+const words = (entry.body ?? '').split(/\s+/).filter(Boolean).length;
+const minutes = Math.max(1, Math.round(words / 200));
+const base = `/learn/${topicSlug}/${entry.id.replace(/-ua$/, '').split('/').slice(1).join('/')}`;
+---
+<LessonLayout
+  lang="ua"
+  title={entry.data.title}
+  summary={entry.data.summary}
+  topic={{ slug: topicSlug, title: topicTitle }}
+  lessonNumber={lessonNumber}
+  lessonTotal={lessonTotal}
+  minutes={minutes}
+  objective={entry.data.objective}
+  why={entry.data.why}
+  keyPoints={entry.data.keyPoints}
+  keyTerms={entry.data.keyTerms}
+  check={entry.data.check}
+  resources={entry.data.resources}
+  prev={prev}
+  next={next}
+  enUrl={base}
+  uaUrl={`${base}/ua`}
+>
+  <Content />
+</LessonLayout>

@@ -1,0 +1,74 @@
+---
+title: "The validation gates: EVT, DVT, PVT"
+order: 3
+objective: "After this lesson you'll be able to explain what EVT, DVT and PVT each prove, and why they have to happen in that order."
+why: "These three acronyms are interview table-stakes, but more importantly they're the gates where a hardware schedule slips or holds. Knowing what each one proves tells you what risk you're actually retiring — and what a 'failed' gate costs."
+summary: "The three prototype build-and-test stages — does it work, does it meet spec and pass certs, can the line build it — and why order matters."
+keyPoints:
+  - "EVT: does it work? DVT: does it meet spec and pass certs? PVT: can the line build it at yield?"
+  - "The gates run in a fixed order — each one assumes the previous question is already answered."
+  - "Certification happens at DVT, takes weeks, can fail, and sits on the critical path."
+  - "Low yield at PVT is 'margin death' even when the product works perfectly."
+keyTerms:
+  - term: "EVT (Engineering Validation Test)"
+    definition: "The first working prototypes. The question is simply 'does it work?' — expect fundamental design flaws to surface here."
+  - term: "DVT (Design Validation Test)"
+    definition: "A near-final design tested against the full spec and certification: 'does it meet requirements and pass the required tests?'"
+  - term: "PVT (Production Validation Test)"
+    definition: "A small run built on the real manufacturing line to prove the line itself: 'can the factory build this at quality and acceptable yield?'"
+  - term: "V&V (verification & validation)"
+    definition: "Checking the product was built right (verification) and that it's the right product that meets its requirements (validation). The validation gates are where this happens formally."
+check:
+  - q: "In one line each, what question do EVT, DVT and PVT answer?"
+    a: "EVT: does it work? DVT: does it meet spec and pass certification? PVT: can the line build it at quality and yield?"
+  - q: "Why can't you run certification at EVT to save time?"
+    a: "Certification tests a near-final design; an EVT prototype is still changing, so passing (or failing) wouldn't mean anything. Certification belongs at DVT, once the design is stable — which is also why it sits on the critical path."
+  - q: "Why is low yield at PVT described as 'margin death'?"
+    a: "If the line only produces good units a fraction of the time, every sellable unit has to absorb the cost of the scrapped ones — quietly destroying your unit economics even though the product 'works'."
+resources:
+  - label: "The Hardware Startup (O'Reilly) — the prototyping and manufacturing chapters"
+  - label: "Verification and validation — overview"
+    url: "https://en.wikipedia.org/wiki/Verification_and_validation"
+---
+import LifecycleTimeline from '../../../components/diagrams/LifecycleTimeline.astro';
+import Callout from '../../../components/Callout.astro';
+
+<LifecycleTimeline highlight={["evt", "dvt", "pvt"]} caption="Where this lesson sits: the three validation gates, between design and mass production." />
+
+Once a design exists, you don't just "go to production." You prove it in three escalating stages, each building real prototypes and asking a sharper question. They're known everywhere by their initials — **EVT, DVT, PVT** — and they always run in this order, because each one assumes the previous question is already answered.
+
+## EVT — does it work?
+
+**Engineering Validation Test** is the first batch of genuinely working prototypes. The question is the most basic one: *does the thing function at all?* Expect the fundamental design flaws to surface here — a power rail that sags, a radio that won't reach, parts that don't physically fit.
+
+**The PM's job:** triage what's broken, decide what must be fixed versus tolerated, and *hold the spec* against the temptation to quietly drop a requirement that turned out to be hard.
+
+## DVT — does it meet spec and pass certs?
+
+**Design Validation Test** uses a near-final design and asks a tougher question: *does it meet the full specification, and does it pass the tests required to sell it?* This is where formal **V&V** and reliability testing happen, and crucially where **certification** is driven.
+
+<Callout type="warning" title="Regulatory detail — verify with a specialist before relying on it">
+<p>To sell a connected device in the EU you generally need <strong>CE marking</strong>, and anything with a radio also falls under the <strong>RED</strong> (Radio Equipment Directive), alongside electromagnetic-compatibility (<strong>EMC</strong>) and materials rules (<strong>RoHS/REACH</strong>). The point for a PM: these are non-negotiable gates, the testing takes weeks, and it can fail — so it sits squarely on the critical path. The exact requirements change and are consequential; confirm specifics with a regulatory/QA specialist.</p>
+</Callout>
+
+**The PM's job:** drive certification early enough that a failure doesn't blow the launch date, and protect the reliability bar.
+
+## PVT — can the line build it?
+
+**Production Validation Test** is a small run built on the *real* manufacturing line, with real tooling and process. The product already works (EVT) and meets spec (DVT); now the question is about the *factory*: *can it build this consistently, at quality, at an acceptable **yield**?* (Yield = the share of units that come off the line good.)
+
+**The PM's job:** validate yield and assembly quality before committing to volume. Low yield is "margin death" — if one unit in five is scrap, the four good ones have to pay for it.
+
+## What failing a gate actually costs
+
+The gates fail in different — and increasingly expensive — ways:
+
+- **Fail EVT** and you've learned early, on a handful of prototypes. Painful but cheap; this is the *good* place to find a flaw.
+- **Fail DVT** and you may be redoing reliability work or re-booking a certification lab — weeks of slip on the critical path, because you can't launch without passing.
+- **Fail PVT** (low yield) and every sellable unit quietly carries the cost of the scrapped ones — a tax on margin that can make a "finished" product unprofitable.
+
+The pattern is the whole reason for front-loading risk: **the later the gate, the more a failure costs.**
+
+## Why the order is fixed
+
+You can't validate manufacturing (PVT) of a design that doesn't yet meet spec (DVT), and you can't certify a design that doesn't yet work (EVT). Each gate stands on the one before. When you hear a hardware team say "we slipped DVT," they're telling you the *meets-spec-and-passes-certs* question isn't answered yet — and that everything downstream just moved.

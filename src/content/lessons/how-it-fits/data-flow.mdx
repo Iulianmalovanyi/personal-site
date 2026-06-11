@@ -1,0 +1,60 @@
+---
+title: "How data flows: device → cloud → app"
+order: 2
+objective: "After this lesson you'll be able to narrate how data travels from a device to the cloud to a user's app — and back — and say which team owns each hop."
+why: "'Walk me through how a connected device sends data to the cloud' is the classic hardware-PM interview question. More practically, the hops tell you where latency, reliability and connectivity-cost trade-offs live, and which team owns a given problem."
+keyPoints:
+  - "Data flows up: device → connectivity → cloud → app. Commands and updates flow back down the same path."
+  - "Each hop is owned by a different team — invaluable when triaging where a problem actually is."
+  - "Classic example: a locker detects a parcel and the courier's app shows it seconds later — be able to narrate every hop."
+  - "Updates flow down too (OTA); staged rollout and rollback matter because you can't recall physical units."
+summary: "The round trip data takes from device to cloud to app and back, the team that owns each hop, and why OTA updates need staged rollout."
+keyTerms:
+  - term: "API"
+    definition: "The agreed interface one system uses to talk to another — here, how the app asks the cloud for the latest data."
+  - term: "MQTT"
+    definition: "A lightweight messaging protocol popular for IoT: devices publish small messages that the cloud subscribes to. (More in the Connectivity topic.)"
+  - term: "OTA"
+    definition: "Over-the-air update — pushing new firmware to devices remotely, over their network connection."
+  - term: "Fleet"
+    definition: "All the deployed devices, managed together. You roll updates out across the fleet, not one device at a time."
+check:
+  - q: "A user says the app shows stale data. Name two different layers the problem could live in."
+    a: "Any hop: the device might not be sending (firmware/connectivity), the cloud might not be updating its stored state, or the app might be showing cached/old data (API/app). The flow tells you where to look and who owns each hop."
+  - q: "Why do OTA updates need staged rollout and rollback?"
+    a: "Because you can't physically recall units. Pushing a bad update to the whole fleet at once could brick thousands of devices; rolling out to a few first, with the ability to roll back, contains the blast radius."
+resources:
+  - label: "The Hardware Startup (O'Reilly) — connected-product fundamentals"
+  - label: "MQTT — overview"
+    url: "https://en.wikipedia.org/wiki/MQTT"
+---
+import DataFlow from '../../../components/diagrams/DataFlow.astro';
+
+The layers from the last lesson aren't static — data moves through them constantly. Being able to narrate that round trip, hop by hop, is the single most common "do you understand hardware?" test.
+
+## The journey, one hop at a time
+
+<DataFlow caption="Data flows up to the cloud and out to the app; commands and updates flow back down the same path." />
+
+Take a connected parcel locker as the example:
+
+1. **A parcel is dropped in.** A **sensor** on the device detects it.
+2. **The firmware logs the event.** The **MCU** running the firmware records what happened. *(Owner: firmware/embedded.)*
+3. **The device sends it out.** Over its connection — Wi-Fi, cellular, etc. — typically using a lightweight protocol like **MQTT**. *(Owner: firmware + connectivity.)*
+4. **The cloud updates its state.** The backend records "locker 12 now has a parcel." *(Owner: cloud.)*
+5. **The user is notified.** The cloud sends a push notification; the courier's **app** fetches the new state via an **API** and shows it. *(Owner: cloud + app.)*
+
+The whole trip takes seconds — but it crossed four teams.
+
+## It flows back down, too
+
+The same path runs in reverse for **commands** and **updates**:
+
+- A user (or the cloud) sends a **command** — "unlock locker 12" — down to the device.
+- The cloud pushes an **OTA** firmware update to the **fleet**; each device validates it, flashes it, and reports success or rolls back.
+
+## What this matters for a PM
+
+- **Triage by ownership.** When something's wrong end-to-end, the flow tells you *which hop and which team* to start with — instead of everyone pointing at each other.
+- **The hard trade-offs live on the way up.** How the device talks to the cloud (Wi-Fi vs cellular vs BLE) trades range, power and recurring cost against each other — a core PM decision, covered in the Connectivity topic.
+- **Updates need care.** Because you can't recall physical units, OTA rollouts are staged and reversible. Your software-release instincts apply — just with higher stakes.

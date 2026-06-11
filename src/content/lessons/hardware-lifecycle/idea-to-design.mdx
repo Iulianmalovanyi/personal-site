@@ -1,0 +1,63 @@
+---
+title: "From idea to a design that can be built"
+order: 2
+objective: "After this lesson you'll be able to describe the three design stages — concept, industrial design, and engineering design — and say what the PM is protecting at each one."
+why: "This is where a product's cost, feel, and manufacturability are decided. Mistakes here are cheap to fix now and brutally expensive later, so it's where a PM earns their keep — locking the right requirements and refusing the wrong scope."
+summary: "The three design stages that turn an idea into something a factory can actually make — and the PM's job at each."
+keyPoints:
+  - "Three design stages: concept (set the cost target), industrial design (form), engineering design (make it work)."
+  - "Unit cost is designed in early — the COGS target is set before the design is finished."
+  - "A beautiful design that can't be made reliably at volume (poor DFM) is a failed design."
+  - "Throughout, the PM protects two things: the cost target and a locked, coherent set of requirements."
+keyTerms:
+  - term: "COGS target"
+    definition: "The unit cost you're designing toward — what one finished unit must cost to make. Set early, because almost every design choice either fits the target or breaks it."
+  - term: "Industrial design (ID)"
+    definition: "The product's form: shape, enclosure, ergonomics, how it looks and feels in the hand. Distinct from engineering, which makes it actually work."
+  - term: "DFM (design for manufacturing)"
+    definition: "Designing a product so it can be made reliably and affordably at volume — not just made once on a bench. A beautiful design that can't be manufactured is a failed design."
+  - term: "Schematic"
+    definition: "The electrical blueprint of the device — what's connected to what. As a PM you read one in a review; you never have to draw it."
+check:
+  - q: "What's the difference between industrial design and engineering design?"
+    a: "Industrial design decides how the product looks, feels and is shaped; engineering design makes it actually work — the electronics, firmware and mechanics. They constrain each other, which is why they're managed together."
+  - q: "Why set a COGS target before the design is finished?"
+    a: "Because unit cost is built in by design choices. If you wait until the design is done to look at cost, you've usually already baked in a number you can't live with."
+resources:
+  - label: "The Hardware Startup (O'Reilly) — chapters on design and design-for-manufacturing"
+  - label: "EEVblog — design and manufacturing reality checks"
+    url: "https://www.eevblog.com/"
+---
+import LifecycleTimeline from '../../../components/diagrams/LifecycleTimeline.astro';
+
+<LifecycleTimeline highlight={["concept", "industrial", "engineering"]} caption="Where this lesson sits: the three design stages, before any prototype exists." />
+
+Before a factory can make anything, the idea has to become a design that's *buildable* — and that happens in three overlapping stages. The trap is treating them as purely engineering work the PM hands off. They're actually where the product's economics and identity get decided.
+
+## 1. Concept & discovery
+
+The familiar part: what problem, which market, rough specs, and a feasibility gut-check. The one hardware-specific addition is **cost**. You set a **COGS target** — what a finished unit must cost to make — and a rough business case, this early.
+
+Why so early? Because in hardware, unit cost is *designed in*. The choice of a cheaper chip, a smaller battery, or a plastic shell instead of aluminium each moves the cost permanently. If you discover at the end that the thing costs twice your target, you don't have a pricing problem — you have a redesign.
+
+**The PM's job:** define the requirements and the cost target, and make sure they're actually compatible. The classic failure here is committing to specs that can't be hit at the target price.
+
+## 2. Industrial design
+
+**Industrial design (ID)** is the product's *form*: its shape, enclosure, ergonomics — how it looks and feels. This is what customers actually touch, so it matters enormously. But form fights function: a sleek, sealed enclosure may leave no room for the antenna, the battery, or the heat the electronics give off.
+
+**The PM's job:** balance desirability against **DFM — design for manufacturing**. A design that photographs beautifully but can't be made reliably at volume is not a finished design; it's a liability. You're the one keeping "can we actually make this, at our cost, at volume?" in the room.
+
+## 3. Engineering design
+
+Now the product is made to *work*: the electronics (captured in a **schematic**, then laid out as a physical board), the firmware that runs on it, and the mechanical parts. These disciplines depend on each other constantly — the enclosure size limits the board, the board limits the battery, the battery limits the features.
+
+**The PM's job:** manage those cross-discipline dependencies and **lock requirements**. Scope creep is especially dangerous here, because a late change can ripple across electrical, mechanical, *and* firmware work at once — each with its own lead time.
+
+### Why locking requirements matters so much here
+
+A late change in engineering design rarely stays contained. Add a feature that needs a bigger battery → the battery needs more space → the enclosure grows → the tooling changes → cost and timeline both move — across three teams at once, each with its own lead time. That ripple is why "just one more thing" is far more dangerous in hardware than in software, and why a big part of the PM's job at this stage is simply *protecting a decision that's already been made.*
+
+## The thread through all three
+
+Notice the pattern: at every design stage the PM is protecting two things — **the cost target** and **a locked, coherent set of requirements** — against the natural pull toward "just one more feature" or "just a slightly nicer shell." Get those right and the validation stages (next lesson) go smoothly. Get them wrong and you'll discover it the hard way, on real prototypes, when fixes cost real money.

@@ -1,0 +1,61 @@
+---
+import { getCollection, render } from 'astro:content';
+import LessonLayout from '../../../../layouts/LessonLayout.astro';
+import { topicBySlug } from '../../../../data/topics';
+
+export async function getStaticPaths() {
+  const all = await getCollection('lessons');
+  const en = all.filter((l) => !l.data.draft && !l.id.endsWith('-ua'));
+  const uaIds = new Set(all.filter((l) => l.id.endsWith('-ua')).map((l) => l.id));
+  return en.map((entry) => {
+    const topicSlug = entry.id.split('/')[0];
+    const lessonSlug = entry.id.split('/').slice(1).join('/');
+    const siblings = en
+      .filter((e) => e.id.split('/')[0] === topicSlug)
+      .sort((a, b) => a.data.order - b.data.order);
+    const idx = siblings.findIndex((e) => e.id === entry.id);
+    const toHref = (e: (typeof siblings)[number]) =>
+      `/learn/${topicSlug}/${e.id.split('/').slice(1).join('/')}`;
+    return {
+      params: { topic: topicSlug, lesson: lessonSlug },
+      props: {
+        entry,
+        topicSlug,
+        lessonNumber: idx + 1,
+        lessonTotal: siblings.length,
+        prev: idx > 0 ? { href: toHref(siblings[idx - 1]), title: siblings[idx - 1].data.title } : null,
+        next: idx < siblings.length - 1 ? { href: toHref(siblings[idx + 1]), title: siblings[idx + 1].data.title } : null,
+        hasUa: uaIds.has(`${entry.id}-ua`),
+      },
+    };
+  });
+}
+
+const { entry, topicSlug, lessonNumber, lessonTotal, prev, next, hasUa } = Astro.props;
+const topic = topicBySlug(topicSlug)!;
+const { Content } = await render(entry);
+const words = (entry.body ?? '').split(/\s+/).filter(Boolean).length;
+const minutes = Math.max(1, Math.round(words / 200));
+const path = `/learn/${topicSlug}/${entry.id.split('/').slice(1).join('/')}`;
+---
+<LessonLayout
+  lang="en"
+  title={entry.data.title}
+  summary={entry.data.summary}
+  topic={{ slug: topic.slug, title: topic.title }}
+  lessonNumber={lessonNumber}
+  lessonTotal={lessonTotal}
+  minutes={minutes}
+  objective={entry.data.objective}
+  why={entry.data.why}
+  keyPoints={entry.data.keyPoints}
+  keyTerms={entry.data.keyTerms}
+  check={entry.data.check}
+  resources={entry.data.resources}
+  prev={prev}
+  next={next}
+  enUrl={path}
+  uaUrl={hasUa ? `${path}/ua` : null}
+>
+  <Content />
+</LessonLayout>

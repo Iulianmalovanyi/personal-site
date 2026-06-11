@@ -1,0 +1,62 @@
+---
+// The hardware product lifecycle as a stepped timeline (BRIEF.md §7).
+// `highlight` accents a subset of stages (by key); the rest are muted.
+interface Props {
+  highlight?: string[];
+  caption?: string;
+}
+const { highlight = [], caption } = Astro.props;
+
+const stages = [
+  { key: 'concept', label: 'Concept' },
+  { key: 'industrial', label: 'Industrial' },
+  { key: 'engineering', label: 'Engineering' },
+  { key: 'evt', label: 'EVT' },
+  { key: 'dvt', label: 'DVT' },
+  { key: 'pvt', label: 'PVT' },
+  { key: 'production', label: 'Production' },
+  { key: 'sustaining', label: 'Sustaining' },
+  { key: 'eol', label: 'EOL' },
+];
+
+const groups = [
+  { label: 'Define & design', from: 0, to: 2 },
+  { label: 'Validate', from: 3, to: 5 },
+  { label: 'Make & support', from: 6, to: 8 },
+];
+
+const padX = 46;
+const span = (960 - padX * 2) / (stages.length - 1);
+const x = (i: number) => padX + i * span;
+const baseY = 96;
+const on = (key: string) => highlight.length === 0 || highlight.includes(key);
+
+const ariaLabel =
+  'Hardware lifecycle timeline: ' + stages.map((s) => s.label).join(', ') + '.';
+---
+<figure class="my-7">
+  <div class="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-surface p-4">
+    <svg viewBox="0 0 960 150" class="block h-auto w-full min-w-[600px]" role="img" aria-label={ariaLabel}>
+      <!-- group bands -->
+      {groups.map((g) => (
+        <g class="text-muted">
+          <line x1={x(g.from) - 16} y1="34" x2={x(g.to) + 16} y2="34" stroke="currentColor" stroke-width="1" opacity="0.4" />
+          <text x={(x(g.from) + x(g.to)) / 2} y="24" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600" letter-spacing="0.04em">{g.label}</text>
+        </g>
+      ))}
+
+      <!-- baseline -->
+      <g class="text-line"><line x1={x(0)} y1={baseY} x2={x(stages.length - 1)} y2={baseY} stroke="currentColor" stroke-width="2" /></g>
+
+      <!-- stages -->
+      {stages.map((s, i) => (
+        <g class={on(s.key) ? 'text-accent' : 'text-muted'}>
+          <line x1={x(i)} y1={baseY} x2={x(i)} y2={baseY} stroke="currentColor" stroke-width="0" />
+          <circle cx={x(i)} cy={baseY} r={on(s.key) ? 8 : 6} fill="currentColor" opacity={on(s.key) ? 1 : 0.5} />
+          <text x={x(i)} y={baseY + 26} text-anchor="middle" fill="currentColor" font-size="13.5" font-weight={on(s.key) ? 700 : 500} opacity={on(s.key) ? 1 : 0.7}>{s.label}</text>
+        </g>
+      ))}
+    </svg>
+  </div>
+  {caption && <figcaption class="mt-2 text-sm text-muted">{caption}</figcaption>}
+</figure>

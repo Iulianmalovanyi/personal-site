@@ -1,0 +1,68 @@
+---
+title: "Lean: eliminating waste"
+order: 2
+objective: "After this lesson you'll be able to explain what Lean is, where it came from, and name the eight wastes it targets — enough to contribute in a process-improvement conversation."
+why: "Lean is the shared language of operations and manufacturing teams. As a hardware/product PM you'll sit in rooms where 'waste', 'flow' and 'value stream' are everyday words; understanding them lets you contribute instead of nod along."
+keyPoints:
+  - "Lean came from the Toyota Production System: deliver more value with less waste."
+  - "Five principles: define value → map the value stream → make work flow → let the customer pull → pursue perfection."
+  - "It hunts eight wastes (mnemonic DOWNTIME) — anything that costs time or effort without adding value."
+  - "Everyday tools: value-stream mapping, 5S, kaizen (small continuous improvements), kanban / just-in-time."
+summary: "What Lean is, its Toyota origins, the five principles, and the eight wastes it targets — plus the tools you'll hear named."
+keyTerms:
+  - term: "Value stream"
+    definition: "Every step needed to deliver a product or service, end to end. Mapping it reveals where time and waste hide."
+  - term: "Muda"
+    definition: "The Japanese word for waste — the things Lean works to remove. (Toyota also names 'mura', unevenness, and 'muri', overburden.)"
+  - term: "Kaizen"
+    definition: "Continuous improvement through many small changes, often suggested by the people doing the work — not occasional big projects."
+  - term: "Kanban"
+    definition: "A visual system (cards / columns) that signals what to work on next and caps work-in-progress — a 'pull' signal, not a 'push'."
+  - term: "JIT (just-in-time)"
+    definition: "Producing or ordering only what's needed, when it's needed, so inventory and overproduction don't pile up."
+check:
+  - q: "Name three of the eight wastes and why each counts as waste."
+    a: "For example — Waiting: idle time adds no value. Overproduction: making more than is needed ties up cash and hides problems. Defects: rework costs time and materials. (Others: transportation, inventory, motion, over-processing, non-used talent.)"
+  - q: "What does 'pull' mean in Lean, and why prefer it to 'push'?"
+    a: "Pull means work starts only when there's real downstream demand (kanban / JIT), instead of pushing batches based on a forecast. It avoids overproduction and inventory waste and surfaces problems sooner."
+  - q: "What is kaizen, in one line?"
+    a: "Continuous improvement through many small, frontline-driven changes rather than rare, large initiatives."
+resources:
+  - label: "Lean Thinking (Womack & Jones) — the canonical Lean overview"
+  - label: "Lean manufacturing — overview"
+    url: "https://en.wikipedia.org/wiki/Lean_manufacturing"
+---
+import EightWastes from '../../../components/diagrams/EightWastes.astro';
+
+Lean is, at heart, one stubborn question asked over and over: *does this step add value the customer would pay for — and if not, why are we doing it?* Everything else is technique.
+
+## Where it came from
+
+Lean grew out of the **Toyota Production System** in post-war Japan, where capital and materials were scarce and waste was unaffordable. Western writers later named the approach "Lean" and distilled it into five principles. The core promise: **deliver more value to customers using less of everything** — less time, less inventory, less effort.
+
+## The five principles
+
+1. **Define value** — precisely, from the customer's point of view.
+2. **Map the value stream** — lay out every step from raw input to delivered value, and mark which steps actually add value.
+3. **Make it flow** — remove the stops, queues and handoffs so work moves smoothly.
+4. **Let the customer pull** — produce in response to real demand, not forecasts.
+5. **Pursue perfection** — repeat, improving continuously (**kaizen**).
+
+## The eight wastes
+
+Lean gives waste concrete categories so teams can spot it. A common mnemonic is **DOWNTIME**:
+
+<EightWastes caption="The eight wastes Lean hunts. If a step matches one of these and the customer wouldn't pay for it, it's a candidate to remove." />
+
+The point isn't to memorise the list — it's the habit: look at any workflow and ask *where is the waiting, the rework, the moving things around, the half-used skills?*
+
+## Tools you'll hear named
+
+- **Value-stream mapping** — drawing the end-to-end process to expose delay and waste.
+- **5S** — a workplace-organisation method (sort, set in order, shine, standardise, sustain) for tidy, efficient, repeatable work.
+- **Kanban** — a visual board that signals what to pull next and limits work-in-progress.
+- **Just-in-time (JIT)** — make/order only what's needed, when it's needed.
+
+## Why it matters for a PM
+
+You won't run a value-stream-mapping workshop, but you'll be *in the conversation*. When an operations lead says "there's too much WIP and we're overproducing," you'll know they mean work is being pushed in batches and piling up — and you can help re-sequence the roadmap so the team builds to real demand. Lean is also the vocabulary behind a lot of "ways of working" discussions well beyond the factory floor.
