@@ -19,3 +19,10 @@ pnpm-debug.log*
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# internal planning / spec docs — kept locally, never committed (not public)
+BRIEF.md
+PROJECT_BRIEF.md
+DECISIONS.md
+SETUP_AND_PROMPTS.md
+Hardware-Software-PM-Roadmap.md

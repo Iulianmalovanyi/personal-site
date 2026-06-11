@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import { t } from '../i18n/ui';
+
+const intro =
+  "A running list of the books I've read recently, each with a short, honest take — what it's about, what stuck with me, and whether I'd recommend it. I read mostly around product, technology, and personal growth. Writing a few lines on each forces me to actually digest a book rather than just finish it — so think of these less as formal reviews and more as working notes, shared in the open.";
+
+const metaDescription =
+  "Books I've read recently, with short honest reviews — mostly around product, technology, and personal growth.";
+
+// Sort by rating (highest first); unrated books go last. order/title break ties.
+const books = (await getCollection('reading')).sort((a, b) => {
+  const ra = a.data.rating ?? -1;
+  const rb = b.data.rating ?? -1;
+  if (rb !== ra) return rb - ra;
+  return a.data.order - b.data.order || a.data.title.localeCompare(b.data.title);
+});
+
+// Split a review string into paragraphs on blank lines.
+const toParagraphs = (s: string) =>
+  s.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+---
+<BaseLayout title={t('nav.reading')} description={metaDescription}>
+  <Container class="py-16">
+    <div class="mx-auto max-w-3xl">
+      <h1 class="text-h1">{t('nav.reading')}</h1>
+      <p class="mt-5 text-[1.05rem] leading-relaxed text-muted">{intro}</p>
+
+      <ul class="mt-12 divide-y divide-line border-y border-line">
+        {books.map((b) => {
+          const paras = toParagraphs(b.data.review);
+          const [first, ...rest] = paras;
+          return (
+            <li class="py-10">
+              <h2 class="font-display text-h3">{b.data.title}</h2>
+              <p class="mt-1 text-sm text-muted">by {b.data.author}</p>
+              {b.data.rating != null && (
+                <p class="mt-2 flex items-center gap-2 text-sm">
+                  <span class="relative inline-block leading-none" role="img" aria-label={`Rated ${b.data.rating} out of 5`}>
+                    <span class="text-line" aria-hidden="true">★★★★★</span>
+                    <span
+                      class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-accent"
+                      style={`width:${(b.data.rating / 5) * 100}%`}
+                      aria-hidden="true"
+                    >★★★★★</span>
+                  </span>
+                  <span class="text-muted">({b.data.rating}/5)</span>
+                </p>
+              )}
+
+              <!-- First paragraph always visible -->
+              <p class="mt-4 leading-relaxed text-fg/90">{first}</p>
+
+              <!-- Remaining paragraphs collapse/expand -->
+              {rest.length > 0 && (
+                <div data-accordion>
+                  <div
+                    id={`read-panel-${b.id}`}
+                    data-panel
+                    role="region"
+                    aria-labelledby={`read-toggle-${b.id}`}
+                    class="accordion-panel"
+                  >
+                    <div class="overflow-hidden">
+                      <div class="space-y-4 pt-4 leading-relaxed text-fg/90">
+                        {rest.map((para) => <p>{para}</p>)}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    id={`read-toggle-${b.id}`}
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls={`read-panel-${b.id}`}
+                    class="group mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-colors hover:text-accent-hover"
+                  >
+                    <span class="group-aria-expanded:hidden">Read more</span>
+                    <span class="hidden group-aria-expanded:inline">Show less</span>
+                    <svg
+                      class="h-4 w-4 transition-transform duration-200 group-aria-expanded:rotate-180"
+                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                    >
+                      <path d="M6 9l6 6 6-6"></path>
+                    </svg>
+                  </button>
+                </div>
+              )}
+
+              {b.data.url && (
+                <a
+                  href={b.data.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link-underline mt-3 inline-block text-sm text-fg/70"
+                >
+                  View the book <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </Container>
+</BaseLayout>
+
+<style>
+  /* Animate height via grid-template-rows (smooth, content-agnostic). */
+  .accordion-panel {
+    display: grid;
+    grid-template-rows: 1fr; /* expanded by default → full review shows if JS is off */
+    transition: grid-template-rows 260ms ease;
+  }
+  .accordion-panel[data-collapsed='true'] {
+    grid-template-rows: 0fr;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .accordion-panel {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-accordion]').forEach((root) => {
+    const btn = root.querySelector('button');
+    const panel = root.querySelector('[data-panel]') as HTMLElement | null;
+    if (!btn || !panel) return;
+    const setOpen = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      panel.dataset.collapsed = String(!open);
+    };
+    // Collapse by default once JS is available.
+    setOpen(false);
+    btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+  });
+</script>

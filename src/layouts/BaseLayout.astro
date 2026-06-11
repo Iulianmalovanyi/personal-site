@@ -52,7 +52,7 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl.href} />
 
-    <link rel="alternate" type="application/rss+xml" title={t('site.title')} href="/writing/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title={t('site.title')} href="/reading/rss.xml" />
 
     <!-- Set the theme before paint to avoid a flash (FOUC). -->
     <script is:inline>

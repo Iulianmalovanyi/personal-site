@@ -6,7 +6,7 @@
 export const navItems = [
   { key: 'nav.about', path: '/about' },
   { key: 'nav.projects', path: '/projects' },
-  { key: 'nav.writing', path: '/writing' },
+  { key: 'nav.reading', path: '/reading' },
   { key: 'nav.learn', path: '/learn' },
 ] as const;
 
@@ -14,14 +14,13 @@ export const ui = {
   // identity
   'site.title': 'Iulian Malovanyi',
   'site.role': 'Product Manager',
-  'site.tagline':
-    'Product Manager building at the intersection of software and hardware — regulated digital health → connected products.',
+  'site.tagline': 'Clarity from chaos. Products that solve real problems.',
 
   // navigation
   'nav.home': 'Home',
   'nav.about': 'About',
   'nav.projects': 'Projects',
-  'nav.writing': 'Writing',
+  'nav.reading': 'Reading',
   'nav.learn': 'Learning Hub',
   'nav.menu': 'Menu',
   'nav.close': 'Close',
