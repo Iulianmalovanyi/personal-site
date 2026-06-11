@@ -2,19 +2,38 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 // Content collections are configured from the start (BRIEF.md §9 / M0).
-// The site is English-only for now, so articles live directly in the collection
-// folder, e.g. src/content/writing/<slug>.mdx (no per-locale subfolders).
-// Schemas are intentionally minimal for M0 and expand in M3/M4/M5.
+// The site is English-only, so entries live directly in each collection folder,
+// e.g. src/content/reading/<slug>.md (no per-locale subfolders).
 
-const writing = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/writing' }),
+// Reading: a list of books I've read recently, each with a short review.
+// One entry = one file (see README). Ordered by `order` (lower first).
+const reading = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/reading' }),
   schema: z.object({
     title: z.string(),
-    description: z.string(),
-    date: z.coerce.date(),
-    tags: z.array(z.string()).default([]),
-    draft: z.boolean().default(false),
+    author: z.string(),
+    review: z.string(), // short feedback / thoughts
+    rating: z.number().min(0).max(5).optional(), // out of 5 (supports halves)
+    url: z.string().url().optional(), // optional link to the book
+    order: z.number().default(100), // lower shows first
   }),
 });
 
-export const collections = { writing };
+// Projects are shown as a stacked, expandable list on /projects (one entry =
+// one file). githubUrl is required; liveUrl is optional (link omitted if absent).
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
+  schema: z.object({
+    title: z.string(),
+    shortDescription: z.string(), // collapsed row
+    fullDescription: z.string(), // expanded view
+    githubUrl: z.string().url(),
+    liveUrl: z.string().url().optional(),
+    image: z.string().optional(), // optional screenshot in /public (shown when expanded)
+    imageAlt: z.string().optional(),
+    features: z.array(z.string()).optional(), // "what you can do" bullet list
+    order: z.number().default(100), // lower shows first
+  }),
+});
+
+export const collections = { reading, projects };

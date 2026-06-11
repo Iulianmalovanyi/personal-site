@@ -2,97 +2,37 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Container from '../Container.astro';
 import Button from '../Button.astro';
-import Card from '../Card.astro';
-import TrackCard from '../TrackCard.astro';
 import { t } from '../../i18n/ui';
-import { tracks } from '../../data/tracks';
 import { site } from '../../data/site';
-
-// Placeholder featured work — replaced by the projects collection in M3.
-// TODO: verify details when the real case studies are written.
-const featured = [
-  {
-    tag: 'Hardware capstone',
-    title: 'Connected-device capstone',
-    blurb: 'A device → cloud → app build that ties the whole hardware course together.',
-    span: 'lg:col-span-3 lg:row-span-2',
-  },
-  {
-    tag: 'PM case study',
-    title: 'Clinical decision support',
-    blurb: 'Earlier cancer detection for 20k+ clinicians in a regulated setting.',
-    span: 'lg:col-span-3',
-  },
-  {
-    tag: 'Experiment',
-    title: 'Live-coded experiments',
-    blurb: 'A home for small, embeddable demos as I learn to build.',
-    span: 'lg:col-span-3',
-  },
-];
 ---
 <BaseLayout>
-  <!-- Hero -->
-  <Container class="pt-20 pb-16 sm:pt-28">
-    <p class="text-sm font-medium uppercase tracking-widest text-accent">{t('site.role')}</p>
-    <h1 class="mt-4 max-w-4xl text-display">{t('site.title')}</h1>
-    <p class="mt-6 max-w-2xl text-lead text-muted">{t('site.tagline')}</p>
-    <div class="mt-9 flex flex-wrap gap-3">
-      <Button href="/projects" variant="primary">{t('cta.viewWork')}</Button>
-      <Button href="/learn" variant="secondary">{t('cta.readHub')}</Button>
-      <Button href={site.linkedin} variant="ghost">{t('cta.connect')}</Button>
-    </div>
-  </Container>
-
-  <!-- Featured work (bento — used once, here) -->
-  <Container class="py-12">
-    <div class="mb-6 flex items-end justify-between gap-4">
-      <h2 class="text-h2">{t('home.featured.title')}</h2>
-      <a href="/projects" class="link-underline shrink-0 text-sm text-fg/70">{t('home.featured.viewAll')}</a>
-    </div>
-    <div class="grid auto-rows-[minmax(11rem,auto)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
-      {featured.map((p) => (
-        <Card href="/projects" class={`flex flex-col justify-between ${p.span}`}>
-          <p class="text-xs font-medium uppercase tracking-wider text-accent">{p.tag}</p>
-          <div class="mt-6">
-            <h3 class="text-h3">{p.title}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-muted">{p.blurb}</p>
-          </div>
-        </Card>
-      ))}
-    </div>
-  </Container>
-
-  <!-- Learning Hub teaser -->
-  <Container class="py-12">
-    <div class="mb-2 flex items-end justify-between gap-4">
-      <h2 class="text-h2">{t('home.exploring.title')}</h2>
-      <a href="/learn" class="link-underline shrink-0 text-sm text-fg/70">{t('home.exploring.cta')}</a>
-    </div>
-    <p class="mb-6 max-w-2xl text-muted">{t('home.exploring.body')}</p>
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {tracks.map((track) => <TrackCard track={track} />)}
-    </div>
-  </Container>
-
-  <!-- Latest writing -->
-  <Container class="py-12">
-    <div class="mb-6 flex items-end justify-between gap-4">
-      <h2 class="text-h2">{t('home.writing.title')}</h2>
-      <a href="/writing" class="link-underline shrink-0 text-sm text-fg/70">{t('home.writing.viewAll')}</a>
-    </div>
-    <Card class="text-muted">{t('home.writing.empty')}</Card>
-  </Container>
-
-  <!-- Closing CTA -->
-  <Container class="py-16">
-    <div class="rounded-[var(--radius-card)] border border-line bg-surface px-8 py-12 text-center">
-      <h2 class="text-h2">{t('home.closing.title')}</h2>
-      <p class="mx-auto mt-3 max-w-md text-muted">{t('home.closing.body')}</p>
-      <div class="mt-7 flex flex-wrap justify-center gap-3">
-        <Button href={site.linkedin} variant="primary">{t('cta.connect')}</Button>
-        <Button href={`mailto:${site.email}`} variant="secondary">{t('footer.email')}</Button>
+  <!-- Hero only. Text + portrait in golden-ratio columns (1.618 : 1). -->
+  <Container class="flex min-h-[78vh] items-center py-16">
+    <div class="grid w-full items-center gap-10 sm:gap-12 lg:grid-cols-[1.618fr_1fr]">
+      <!-- Text -->
+      <div class="order-2 lg:order-1">
+        <p class="text-sm font-medium uppercase tracking-widest text-accent">{t('site.role')}</p>
+        <h1 class="mt-4 text-display">{t('site.title')}</h1>
+        <p class="mt-6 max-w-xl text-lead text-muted">{t('site.tagline')}</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <Button href="/projects" variant="primary">{t('cta.viewWork')}</Button>
+          <Button href="/learn" variant="secondary">{t('cta.readHub')}</Button>
+          <Button href={site.linkedin} variant="secondary">{t('cta.connect')}</Button>
+        </div>
       </div>
+
+      <!-- Portrait -->
+      {site.photo && (
+        <div class="order-1 lg:order-2">
+          <img
+            src={site.photo}
+            alt="Iulian Malovanyi"
+            width="400"
+            height="400"
+            class="mx-auto w-full max-w-[18rem] rounded-2xl border border-line object-cover shadow-[var(--shadow-soft)] lg:mx-0 lg:max-w-none"
+          />
+        </div>
+      )}
     </div>
   </Container>
 </BaseLayout>
