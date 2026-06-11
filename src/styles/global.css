@@ -215,4 +215,12 @@
     padding-left: 1rem;
     color: var(--color-muted);
   }
+  /* Let diagrams render wider than the reading column on larger screens, so the
+     SVG (and its labels) downscale less and stay legible. */
+  @media (min-width: 1024px) {
+    .lesson-prose figure {
+      width: 118%;
+      margin-inline: -9%;
+    }
+  }
 }
