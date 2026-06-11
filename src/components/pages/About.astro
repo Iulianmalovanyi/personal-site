@@ -8,15 +8,17 @@ import { site } from '../../data/site';
 // Three-part personal credo (kicker, set apart from the intro).
 const epigraph = ['Why before what', 'Clarity over comfort', 'Outcome over output'];
 
+// Greeting sits on its own row, above the rest of the intro.
+const greeting = 'Hi, I’m Iulian.';
+
 // Verbatim author copy — do not paraphrase or reorder.
 const essay = [
-  'Hi, I’m Iulian. Over the past five years, as a Product Manager, I’ve been working on AI-powered clinical decision support software used daily by more than 20,000 clinicians across thousands of NHS general practices, helping to support earlier cancer detection and contributing to the identification of tens of thousands of cancers so far.',
+  'Over the past five years, as a Product Manager, I’ve been working on AI-powered clinical decision support software used daily by more than 20,000 clinicians across thousands of NHS general practices, helping to support earlier cancer detection and contributing to the identification of tens of thousands of cancers so far.',
   'Working where a single product decision can touch a patient outcome shaped how I think about the job: solve a real problem, respect the full context, and decide responsibly even when you can’t decide perfectly.',
   'I didn’t start in product. I began in IT as a QA engineer — a deliberate choice, because I wanted to understand how technology actually gets built before trying to decide what we should build. That technical grounding still shapes how I work: I can talk to engineers in their own terms, ask sharper questions, and make more informed calls.',
   'Roadmaps, prioritisation, discovery, stakeholder alignment — these are the craft, and every PM should be fluent in them. But they’re not the point. The real work starts when information is incomplete and priorities compete: bringing clarity, getting people around one shared outcome, and helping the team make a good decision and move. A big part of how I see the role is connecting people and perspectives — because many product problems turn out to be alignment and communication problems rather than purely technical ones.',
-  'I’d also rather ship less and change something real. What matters to me is whether the thing we built actually helped the people using it — not how much of it there was.',
-  'Right now I’m deliberately moving toward connected hardware — products where software meets the physical world. This site is where I document that journey: what I’m learning about electronics, embedded systems, and IoT, alongside notes on product, books, and the ideas I’m chewing on.',
-  'If you’re building something at that intersection — or just want to compare notes on product — I’d be glad to hear from you.',
+  'For me, success isn’t measured by how much we’ve shipped—it’s measured by whether we’ve solved a real problem and made someone’s life a little better.',
+  'Beyond my day-to-day work, I spend a lot of time learning. Whether it’s product management, technology, hardware, books, or personal development, I’m always looking for new ideas and perspectives. This website is where I share some of what I’m exploring and learning along the way.',
 ];
 ---
 <BaseLayout title={t('about.title')}>
@@ -26,23 +28,24 @@ const essay = [
 
     <!-- Intro: portrait + personal credo (each line of the credo on its own row) -->
     <div class="flex flex-col-reverse gap-6 sm:flex-row sm:items-start sm:justify-between">
-      <div class="space-y-1.5 text-sm uppercase tracking-[0.18em] text-muted sm:text-base" role="doc-epigraph">
+      <div class="space-y-2 text-base uppercase tracking-[0.18em] text-muted sm:text-lg" role="doc-epigraph">
         {epigraph.map((part) => <p>{part}</p>)}
       </div>
       {site.photo && (
         <img
           src={site.photo}
           alt="Iulian Malovanyi"
-          width="192"
-          height="192"
+          width="256"
+          height="256"
           loading="eager"
-          class="h-40 w-40 shrink-0 rounded-2xl border border-line object-cover shadow-[var(--shadow-soft)] sm:h-48 sm:w-48"
+          class="h-48 w-48 shrink-0 rounded-2xl border border-line object-cover shadow-[var(--shadow-soft)] sm:h-64 sm:w-64"
         />
       )}
     </div>
 
-    <!-- Essay (uniform body size) -->
+    <!-- Essay (uniform body size); greeting on its own row -->
     <div class="mt-10 space-y-5 text-[1.05rem] leading-relaxed">
+      <p>{greeting}</p>
       {essay.map((para) => <p>{para}</p>)}
     </div>
 

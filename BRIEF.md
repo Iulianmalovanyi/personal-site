@@ -27,7 +27,7 @@ A personal website that does three jobs at once:
 - **Styling:** Tailwind CSS (latest). Use a small, centralised design-token layer (see §6) — do not scatter magic values.
 - **Interactivity:** island components only where needed (theme toggle, progress tracker, nav). Keep the rest static.
 - **Diagrams:** inline **SVG** components authored in code (no external image dependencies, fully themeable, zero copyright risk). See §7.
-- **i18n:** Astro's built-in internationalised routing — `en` as the default locale (served at the root, no URL prefix) and `uk` served under `/uk`. See §11.
+- **i18n:** Astro's built-in internationalised routing — `en` as the default locale (served at the root, no URL prefix) and Ukrainian served under the **`/ua`** URL path. Note the distinction: the **URL path is `/ua`** (so it doesn't read as "United Kingdom"), but the **BCP 47 language code stays `uk`** (the correct ISO 639-1 code for Ukrainian) for `<html lang>` and `hreflang`. Map the path to the code in Astro's locale config. See §11.
 - **Deploy:** GitHub repo → Vercel or Netlify free tier. Set this up in Milestone 0 so there's a live URL from day one.
 - **Node:** 18+ (the author may use the Claude Code native installer instead of npm — either is fine).
 
@@ -48,9 +48,9 @@ If you prefer Next.js, flag the trade-off first and wait for confirmation; defau
 /learn/[phase]/[slug]  Individual lesson article
 ```
 
-Global: sticky minimal header (logo/name, nav, **language switcher (EN/UK)**, theme toggle), footer (LinkedIn, email, RSS, GitHub). Every page has correct meta/OG tags (§8).
+Global: sticky minimal header (logo/name, nav, **language switcher (EN/УКР)**, theme toggle), footer (LinkedIn, email, RSS, GitHub). Every page has correct meta/OG tags (§8).
 
-Every route above also exists under `/uk/…` for the Ukrainian version (English is the unprefixed default). The language switcher swaps to the equivalent page in the other language; if a Ukrainian translation doesn't exist yet, it falls back gracefully (see §11).
+Every route above also exists under `/ua/…` for the Ukrainian version (English is the unprefixed default). The language switcher swaps to the equivalent page in the other language; if a Ukrainian translation doesn't exist yet, it falls back gracefully (see §11).
 
 ---
 
@@ -75,30 +75,41 @@ The repo will contain `Hardware-Software-PM-Roadmap.md` (the author's roadmap). 
 
 ### 5.2 Hub landing page (`/learn`)
 - Short intro: who this is for ("a product manager learning hardware from zero, in public") and how to use it.
-- A visual **phase map** (SVG) showing Phases 1→5 and where the reader is.
-- A **progress tracker**: mark lessons complete (persist in `localStorage`), show % per phase. (This is the one place `localStorage` is appropriate — it's the live site, not a sandbox.)
-- Estimated time per phase (from the roadmap).
+- A visual **topic map** (SVG) showing the ten topics in order and where the reader is.
+- A **progress tracker**: mark lessons complete (persist in `localStorage`), show % complete per topic. (This is the one place `localStorage` is appropriate — it's the live site, not a sandbox.)
+- Estimated time per topic.
 
-### 5.3 Lesson organisation
-Create one lesson article per topic, grouped by the roadmap's phases plus its conceptual sections. At minimum, generate lessons for:
-- **Foundations:** how a connected product fits together (the layer-stack model); the hardware product lifecycle; how hardware PM differs from software PM.
-- **Phase 1:** electricity basics (V/I/R, power), digital vs analog, what an MCU is, sensors vs actuators, reading a schematic; the four Arduino starter exercises.
-- **Phase 2:** firmware vs embedded vs app software; the main loop / interrupts / RTOS (conceptual); connectivity options (BLE/Wi-Fi/cellular/LoRa) and trade-offs; MQTT; OTA updates; power/battery basics; the ESP32 exercises.
-- **Phase 3:** device→cloud→app end to end; fleet/device management; the capstone walk-through.
-- **Phase 4:** lifecycle stage gates (EVT/DVT/PVT etc.); BOM/COGS/NRE/MOQ/yield/RMA; EU certification (CE, RED, EMC, RoHS/REACH).
-- **Phase 5 / reference:** the terminology glossary (as a filterable reference page); interview-prep notes.
+### 5.3 Lesson organisation — topics, each with one or more lessons
+Organise the Learning Hub around the **ten high-level topics** in the roadmap's "Study overview" section (read it). Each topic is a **section that contains one or more lessons** — a topic is *not* limited to a single article. Split a topic into several short, focused lessons whenever that makes it easier to learn step by step (for example, "Embedded systems & firmware" might be three short lessons: what firmware is · why the device is constrained · why firmware changes are slow and careful). A simple topic might be a single lesson. Use judgement; favour several short lessons over one long one.
+
+The ten topics, in order:
+1. How a connected product fits together
+2. Electronics, the basics
+3. Embedded systems & firmware
+4. Connectivity & IoT
+5. Robotics (high level)
+6. The hardware product lifecycle
+7. Manufacturing, quality & operations
+8. Lean & Six Sigma
+9. How hardware PM differs from software PM
+10. Terminology & interview readiness
+
+Pull the actual content and depth for each from `Hardware-Software-PM-Roadmap.md` (the detailed sections map onto these topics). The hub landing shows the topics in order; the progress tracker tracks lessons within each topic.
+
 
 ### 5.4 Lesson article template (use this exact structure for every lesson)
-1. **Breadcrumb / "where this sits":** Phase X · Lesson Y of Z.
+1. **Breadcrumb / "where this sits":** Topic name · Lesson Y of Z.
 2. **Learning objective:** "After this lesson you'll be able to …" (1–2 outcomes).
 3. **Why it matters for a PM:** the relevance hook (2–4 sentences).
 4. **The concept, in plain language:** no assumed prior knowledge; use analogies; define every term on first use. Keep depth to the roadmap's rating for that topic.
-5. **Diagram:** at least one labelled SVG illustration (§7).
+5. **Diagram:** at least one labelled SVG illustration (§7) — schemas/diagrams are expected in most lessons, not optional decoration.
 6. **Hands-on (where relevant):** the Arduino/ESP32 exercise, with "what you should observe" so the reader knows it worked.
 7. **Key terms:** glossary chips linking to the glossary page.
 8. **Check yourself:** 2–3 short self-test questions (with collapsible answers).
 9. **Resources:** 2–4 links (prefer the ones named in the roadmap).
 10. **Prev / Next** navigation + "mark complete".
+
+**Lesson length:** not long. Aim for roughly a 4–7 minute read each — long enough to actually understand the concept, short enough to finish in one sitting and feel progress. If a topic needs more than that, split it into several lessons (§5.3) rather than writing one long one. Structured and clear beats comprehensive-but-exhausting.
 
 ### 5.5 Content authoring & accuracy rules (important — the author learns from this)
 
@@ -178,21 +189,24 @@ After each milestone: list what changed, how to preview it locally (`npm run dev
 **Principle:** English is the default and authoritative version; Ukrainian is a complete parallel translation that may lag behind English. Nothing should ever appear half-translated or broken because a translation is missing.
 
 **Routing**
-- Use Astro's built-in i18n. `en` is the default locale served at the root with **no prefix** (`/about`, `/learn/...`); `uk` is served under `/uk` (`/uk/about`, `/uk/learn/...`).
-- Set `<html lang>` per locale and emit `hreflang` alternates linking the two versions of each page (§8).
+- Use Astro's built-in i18n. `en` is the default locale served at the root with **no prefix** (`/about`, `/learn/...`); Ukrainian is served under the **`/ua`** URL path (`/ua/about`, `/ua/learn/...`).
+- **Important — path vs language code:** the visible URL segment is `/ua`, but the actual language code is **`uk`** (the ISO 639-1 / BCP 47 code for Ukrainian). `ua` is a *country* code, not a language code, so it must never appear in `<html lang>` or `hreflang`. Configure Astro's locale so the URL `path` is `ua` while the language `codes` are `uk` (use Astro's object locale syntax that maps a path to codes; verify the exact syntax against current Astro i18n docs).
+- Set `<html lang="en">` / `<html lang="uk">` per page, and emit `hreflang="en"` / `hreflang="uk"` alternates linking the two versions of each page (§8). The `/ua` path uses `lang="uk"`.
 
 **Content structure**
-- Store content per locale so each page/article has an English file and a Ukrainian file sharing a slug — e.g. `src/content/learn/en/<slug>.mdx` and `src/content/learn/uk/<slug>.mdx`. Same for `writing` and any other collection.
+- Store content per locale so each page/article has an English file and a Ukrainian file sharing a slug — e.g. `src/content/learn/en/<slug>.mdx` and `src/content/learn/ua/<slug>.mdx`. Same for `writing` and any other collection. (Folder name `ua` matches the URL path so it's easy to find; the language tag emitted is still `uk`.)
 - Keep all UI/chrome strings (nav labels, buttons, "mark complete", "reading time", etc.) in locale dictionaries (`en.json` / `uk.json`), never hard-coded.
 
 **Language switcher**
 - In the header. Switching takes the reader to the **same page** in the other language.
 - **Graceful fallback:** if the current page has no translation yet, either (a) keep the switcher but show a small "English only — Ukrainian coming" note when switched, or (b) link to the Ukrainian homepage rather than 404. Never produce a broken route. Pick one approach and apply it consistently.
 
-**Translation rules**
-- Author English first; translate to Ukrainian only after the English is reviewed (see M6).
-- In Ukrainian text, **keep technical terms, methodology names, and resource/course names in English** (e.g. "firmware", "MQTT", "OTA", "Lean Six Sigma", "Green Belt"). Translate the surrounding explanation, not the terms.
-- Diagrams: keep diagram labels in English in both versions (the terms are English by rule); translate only captions/surrounding prose.
+**Translation rules — natural Ukrainian, not literal translation (critical)**
+- Author English first; produce the Ukrainian version only after the English is reviewed (see M6).
+- The Ukrainian version must read as if it were **originally written in Ukrainian by a native speaker** — natural, idiomatic, fluent. Do **not** translate word-for-word or mirror English sentence structure. Treat the English as the *meaning to convey*, then re-express it the way a Ukrainian author would actually write it: adapt phrasing, sentence rhythm, word order, and idioms to Ukrainian norms. A reader should never be able to tell it was translated. (A previous version of this site failed exactly here — the Ukrainian read as stiff, machine-translated English. Do not repeat that.)
+- Keep **technical terms, methodology names, and resource/course names in English** inside the Ukrainian text (e.g. "firmware", "MQTT", "OTA", "Lean Six Sigma", "Green Belt") — but everything around them must be natural Ukrainian.
+- Match the register and warmth of the English (clear, friendly, beginner-oriented), but in a genuine Ukrainian voice, not a calque.
+- Diagrams: keep diagram labels in English in both versions; translate only captions and surrounding prose — again, naturally.
 
 **README**
-- Document, for a non-developer, how to add a new article in both languages: copy the English template file, then copy it into the `uk` folder and translate the prose, leaving terms in English.
+- Document, for a non-developer, how to add a new article in both languages: copy the English template file, then copy it into the `ua` folder and translate the prose, leaving terms in English.

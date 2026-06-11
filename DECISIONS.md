@@ -4,7 +4,30 @@ Amendments and clarifications agreed during the build. `BRIEF.md` is the
 original authoritative spec; this file records where we've consciously deviated
 or extended it. Most recent first.
 
+## 2026-06-11
+
+### BRIEF.md refreshed to the updated spec; roadmap added
+Replaced `BRIEF.md` with the author's updated delivery (newer §5 — the Learning
+Hub is now organised around the **10 roadmap topics** rather than "Phases 1–5",
+and §11 documents the `/ua` path + `uk` code). `Hardware-Software-PM-Roadmap.md`
+added to the repo root (the authoritative source for Learning Hub lessons, M6).
+
+**Still English-only.** The updated brief's bilingual sections (§11, the EN/УКР
+switcher) are superseded by our English-only decision below — adopted the brief
+for its structure, not to reintroduce Ukrainian.
+
 ## 2026-06-06 (latest)
+
+### Projects: stacked expandable list instead of a grid
+Per request, `/projects` is a vertical, accordion-style list (not the card grid
+described in brief §4). Each row shows title + short description; clicking
+expands in place to reveal the full description, a required "View on GitHub"
+link, and an optional "Live site" link. Accessible (button + `aria-expanded` +
+`role="region"`, keyboard-operable), animated via a `grid-template-rows`
+transition, and disabled under `prefers-reduced-motion`. Content schema:
+`title, shortDescription, fullDescription, githubUrl (req), liveUrl (opt)`
+plus an optional `order`.
+
 
 ### Site is English-only — Ukrainian version removed
 The bilingual setup was removed and the site is now English-only. Reason:
