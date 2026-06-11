@@ -36,4 +36,23 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { reading, projects };
+// Learning Hub lessons. One file per lesson, grouped by topic folder:
+// src/content/lessons/<topic>/<order>-<slug>.mdx — the topic is the folder name.
+// The §5.4 template: most sections are structured frontmatter; the MDX body holds
+// "the concept, in plain language" + embedded diagram components.
+const lessons = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/lessons' }),
+  schema: z.object({
+    title: z.string(),
+    order: z.number().default(100), // order within the topic
+    objective: z.string(), // "After this lesson you'll be able to …"
+    why: z.string(), // why it matters for a PM
+    summary: z.string(), // meta description + topic listing
+    keyTerms: z.array(z.object({ term: z.string(), definition: z.string() })).default([]),
+    check: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+    resources: z.array(z.object({ label: z.string(), url: z.string().url().optional() })).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { reading, projects, lessons };

@@ -1,0 +1,50 @@
+---
+// Conceptual cost picture: one-time costs (NRE + tooling) vs per-unit cost (BOM +
+// assembly) that together shape unit economics. Not to scale — a teaching aid.
+interface Props {
+  caption?: string;
+}
+const { caption } = Astro.props;
+---
+<figure class="my-7">
+  <div class="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-surface p-5">
+    <svg viewBox="0 0 920 230" class="block h-auto w-full min-w-[560px]" role="img"
+      aria-label="One-time costs (NRE and tooling) are paid before any units ship; per-unit cost (BOM and assembly) repeats for every unit and sets the unit economics.">
+      <!-- one-time costs -->
+      <g class="text-muted">
+        <rect x="30" y="40" width="300" height="150" rx="10" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <text x="180" y="30" text-anchor="middle" fill="currentColor" class="text-fg" font-size="14" font-weight="700">One-time (NRE)</text>
+      </g>
+      <text x="180" y="78" text-anchor="middle" class="text-fg" fill="currentColor" font-size="13">Engineering &amp; design</text>
+      <text x="180" y="108" text-anchor="middle" class="text-fg" fill="currentColor" font-size="13">Tooling &amp; moulds</text>
+      <text x="180" y="138" text-anchor="middle" class="text-fg" fill="currentColor" font-size="13">Certification</text>
+      <text x="180" y="170" text-anchor="middle" class="text-muted" fill="currentColor" font-size="12">paid once, before units ship</text>
+
+      <!-- arrow -->
+      <g class="text-muted">
+        <line x1="345" y1="115" x2="395" y2="115" stroke="currentColor" stroke-width="1.5" />
+        <path d="M395 115 l-9 -5 v10 z" fill="currentColor" />
+      </g>
+
+      <!-- per-unit -->
+      <g class="text-accent">
+        <rect x="410" y="40" width="300" height="150" rx="10" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <text x="560" y="30" text-anchor="middle" fill="currentColor" font-size="14" font-weight="700">Per unit (BOM)</text>
+      </g>
+      <text x="560" y="78" text-anchor="middle" class="text-fg" fill="currentColor" font-size="13">Components</text>
+      <text x="560" y="108" text-anchor="middle" class="text-fg" fill="currentColor" font-size="13">Assembly &amp; test</text>
+      <text x="560" y="138" text-anchor="middle" class="text-fg" fill="currentColor" font-size="13">Packaging</text>
+      <text x="560" y="170" text-anchor="middle" class="text-muted" fill="currentColor" font-size="12">repeats for every unit (× volume)</text>
+
+      <!-- equals COGS -->
+      <g class="text-muted">
+        <line x1="725" y1="115" x2="775" y2="115" stroke="currentColor" stroke-width="1.5" />
+        <path d="M775 115 l-9 -5 v10 z" fill="currentColor" />
+      </g>
+      <text x="848" y="105" text-anchor="middle" class="text-fg" fill="currentColor" font-size="15" font-weight="700">COGS</text>
+      <text x="848" y="128" text-anchor="middle" class="text-muted" fill="currentColor" font-size="12">+ margin</text>
+      <text x="848" y="146" text-anchor="middle" class="text-muted" fill="currentColor" font-size="12">= price</text>
+    </svg>
+  </div>
+  {caption && <figcaption class="mt-2 text-sm text-muted">{caption}</figcaption>}
+</figure>

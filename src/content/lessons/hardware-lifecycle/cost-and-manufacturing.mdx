@@ -1,0 +1,61 @@
+---
+title: "The money & manufacturing words a PM needs"
+order: 5
+objective: "After this lesson you'll be able to use the core cost and manufacturing terms — BOM, COGS, NRE, tooling, MOQ, yield, lead time, NPI — correctly in a conversation, and know which ones gate timing, volume, or margin."
+why: "These words run through every lifecycle gate: the cost target in design, yield at PVT, lead times on the critical path. Using them fluently is most of sounding like you understand hardware — and they're exactly what a deep-tech interview probes."
+summary: "A plain-language tour of the cost and manufacturing vocabulary — one-time vs per-unit cost, and the terms that gate your timing, volume and margin."
+keyTerms:
+  - term: "BOM (bill of materials)"
+    definition: "The full parts list for one unit, with the cost of each. Add it up and you have the unit's component cost — the heart of COGS."
+  - term: "COGS (cost of goods sold)"
+    definition: "What it costs to make one finished unit — components, assembly, test, packaging. Every cent is permanent and multiplied by every unit you ship."
+  - term: "NRE (non-recurring engineering)"
+    definition: "One-time costs paid before any units ship: engineering effort, tooling, certification. Spent once, regardless of how many units you eventually make."
+  - term: "MOQ (minimum order quantity)"
+    definition: "The smallest batch a supplier will make or sell. MOQs force you to commit to volume (and cash) up front, before you know real demand."
+  - term: "Yield"
+    definition: "The share of units that come off the line good. Low yield means you're paying to build scrap, which quietly destroys margin."
+  - term: "NPI (new product introduction)"
+    definition: "The structured process of taking a product from final design into volume manufacturing — the hand-off to the factory, roughly the EVT→DVT→PVT→ramp span."
+check:
+  - q: "What's the difference between NRE and BOM cost, and why does it matter for pricing?"
+    a: "NRE is one-time (tooling, engineering, certification); BOM cost repeats for every unit. You recover NRE across all units sold, but BOM cost is paid again and again — so volume changes how much each unit must carry."
+  - q: "Why can a product that 'works perfectly' still lose money at the factory?"
+    a: "Low yield. If a meaningful share of units come off the line defective, the good ones have to absorb the cost of the scrapped ones — eroding or erasing margin even though the design is fine."
+  - q: "Why does an MOQ make demand forecasting a financial risk, not just a planning one?"
+    a: "Because you must buy at least the minimum batch up front. Over-forecast and you've sunk cash into unsellable stock; under-forecast and you hit lead times waiting for more."
+resources:
+  - label: "The Hardware Startup (O'Reilly) — costing, sourcing and manufacturing"
+  - label: "Bill of materials — overview"
+    url: "https://en.wikipedia.org/wiki/Bill_of_materials"
+---
+import CostBreakdown from '../../../components/diagrams/CostBreakdown.astro';
+
+Every lifecycle gate you've met runs on a handful of money-and-manufacturing words. You don't need to calculate them — you need to *use them correctly* and know which lever each one pulls. Here they are, grouped by what they actually do to your product.
+
+## Two kinds of cost
+
+The first thing to get straight: hardware has **one-time costs** and **per-unit costs**, and they behave completely differently.
+
+<CostBreakdown caption="One-time costs (NRE) are paid once, before units ship. Per-unit cost (BOM) repeats for every unit. Together they shape COGS — and the price." />
+
+- **NRE (non-recurring engineering)** is paid *once*, before a single unit ships: the engineering effort, the **tooling** (the moulds and fixtures a factory needs — often expensive to cut), and certification. Make 100 units or 100,000 — the NRE is the same.
+- **BOM (bill of materials)** is the parts list for *one* unit, with each part's price. Add it up, plus assembly, test and packaging, and you get **COGS (cost of goods sold)** — the cost of one finished unit. This repeats for every unit, forever.
+
+That split explains a lot of hardware behaviour. High NRE wants high volume to spread it thin. High BOM cost can't be volume'd away — it's baked into every unit, which is why **cost-down** (shaving cents off the BOM) is a permanent activity, and why the **COGS target** is set so early in design.
+
+## Words that gate your timing and volume
+
+- **Lead time** — the wait to receive something you ordered. Components, board fabrication, tooling and certification each carry weeks-to-months of lead time, and they chain together into the critical path. This is why hardware can't "sprint."
+- **MOQ (minimum order quantity)** — the smallest batch a supplier will produce. MOQs force you to commit to volume and cash *before* you know real demand, turning forecasting into a financial bet.
+- **NPI (new product introduction)** — the structured hand-off from a finished design into volume manufacturing. It's the umbrella name for getting cleanly through the EVT→DVT→PVT→ramp sequence with a contract manufacturer.
+
+## Words that quietly eat margin
+
+- **Yield** — the fraction of units that come off the line good. Low yield means you're paying to build scrap; the good units carry that cost.
+- **RMA (return merchandise authorization)** — the process for customers returning faulty units. A rising RMA rate is both a direct cost and an early warning of a field-quality problem.
+- **DFM (design for manufacturing)** — designing so the product can be built reliably and cheaply at volume (met in lesson 2). Good DFM is what *protects* yield and BOM cost before they become problems.
+
+## The PM takeaway
+
+When you can say "our **NRE** is heavy because of **tooling**, so we need volume to hit our **COGS target**, but our **MOQ** and component **lead times** mean we commit cash before demand is proven, and if **yield** at **PVT** is low it'll eat the margin" — and mean it — you're speaking hardware. That sentence touches design, validation, manufacturing and unit economics at once, which is exactly the cross-disciplinary view a hardware PM is hired for.

@@ -1,0 +1,178 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Callout from '../components/Callout.astro';
+
+interface NavItem {
+  href: string;
+  title: string;
+}
+interface Props {
+  title: string;
+  summary: string;
+  topic: { slug: string; title: string };
+  lessonNumber: number;
+  lessonTotal: number;
+  minutes: number;
+  objective: string;
+  why: string;
+  keyTerms?: { term: string; definition: string }[];
+  check?: { q: string; a: string }[];
+  resources?: { label: string; url: string }[];
+  lessonId: string;
+  prev?: NavItem | null;
+  next?: NavItem | null;
+}
+const {
+  title, summary, topic, lessonNumber, lessonTotal, minutes,
+  objective, why, keyTerms = [], check = [], resources = [],
+  lessonId, prev = null, next = null,
+} = Astro.props;
+---
+<BaseLayout title={title} description={summary}>
+  <!-- reading progress bar -->
+  <div id="reading-bar" class="fixed left-0 top-0 z-[60] h-0.5 w-0 bg-accent" aria-hidden="true"></div>
+
+  <Container width="prose" class="py-12 sm:py-16">
+    <!-- Breadcrumb / where this sits -->
+    <nav class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted" aria-label="Breadcrumb">
+      <a href="/learn" class="link-underline">Learning Hub</a>
+      <span aria-hidden="true">/</span>
+      <a href={`/learn/${topic.slug}`} class="link-underline">{topic.title}</a>
+    </nav>
+    <p class="mt-3 text-sm font-medium uppercase tracking-wider text-accent">
+      Lesson {lessonNumber} of {lessonTotal} · {minutes} min read
+    </p>
+
+    <h1 class="mt-2 text-h1">{title}</h1>
+
+    <!-- Learning objective -->
+    <Callout type="info" title="Learning objective"><p>{objective}</p></Callout>
+
+    <!-- Why it matters for a PM -->
+    <Callout type="pm" title="Why it matters for a PM"><p>{why}</p></Callout>
+
+    <!-- The concept (MDX body: prose + diagrams) -->
+    <article class="lesson-prose mt-8">
+      <slot />
+    </article>
+
+    <!-- Key terms -->
+    {keyTerms.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-h3">Key terms</h2>
+        <dl class="mt-3 space-y-2.5">
+          {keyTerms.map((k) => (
+            <div class="text-[0.97rem] leading-relaxed">
+              <dt class="inline rounded-[var(--radius-pill)] bg-surface-2 px-2 py-0.5 font-mono text-[0.85em] font-medium text-accent">{k.term}</dt>
+              <dd class="mt-1 text-fg/85">{k.definition}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )}
+
+    <!-- Check yourself -->
+    {check.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-h3">Check yourself</h2>
+        <div class="mt-3 space-y-2.5">
+          {check.map((c) => (
+            <details class="group rounded-[var(--radius-card)] border border-line bg-surface px-4 py-3">
+              <summary class="cursor-pointer list-none font-medium marker:hidden [&::-webkit-details-marker]:hidden">
+                <span class="text-accent" aria-hidden="true">Q.</span> {c.q}
+              </summary>
+              <p class="mt-2 text-fg/85">{c.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Resources -->
+    {resources.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-h3">Resources</h2>
+        <ul class="mt-3 space-y-1.5">
+          {resources.map((r) => (
+            <li>
+              {r.url
+                ? <a href={r.url} target="_blank" rel="noopener noreferrer" class="link-underline text-fg/85">{r.label} <span aria-hidden="true">↗</span></a>
+                : <span class="text-fg/85">{r.label}</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <!-- Mark complete -->
+    <div class="mt-10 border-t border-line pt-6">
+      <button
+        id="mark-complete"
+        type="button"
+        data-lesson-id={lessonId}
+        class="inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-line bg-surface px-4 py-2 text-sm font-medium transition-colors hover:border-accent/50"
+        aria-pressed="false"
+      >
+        <span data-check aria-hidden="true">○</span>
+        <span data-label>Mark complete</span>
+      </button>
+    </div>
+
+    <!-- Prev / Next -->
+    <nav class="mt-8 grid gap-3 sm:grid-cols-2" aria-label="Lesson navigation">
+      {prev ? (
+        <a href={prev.href} class="rounded-[var(--radius-card)] border border-line bg-surface p-4 transition-colors hover:border-accent/40">
+          <span class="text-xs uppercase tracking-wider text-muted">← Previous</span>
+          <span class="mt-1 block font-medium">{prev.title}</span>
+        </a>
+      ) : <span></span>}
+      {next ? (
+        <a href={next.href} class="rounded-[var(--radius-card)] border border-line bg-surface p-4 text-right transition-colors hover:border-accent/40 sm:text-right">
+          <span class="text-xs uppercase tracking-wider text-muted">Next →</span>
+          <span class="mt-1 block font-medium">{next.title}</span>
+        </a>
+      ) : <span></span>}
+    </nav>
+  </Container>
+</BaseLayout>
+
+<script>
+  // Reading progress bar
+  const bar = document.getElementById('reading-bar');
+  const onScroll = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    if (bar) bar.style.width = pct + '%';
+  };
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Mark complete (persists in localStorage under a single 'hub:done' set)
+  const KEY = 'hub:done';
+  const getDone = (): string[] => {
+    try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; }
+  };
+  const btn = document.getElementById('mark-complete');
+  if (btn) {
+    const id = btn.dataset.lessonId!;
+    const checkEl = btn.querySelector('[data-check]')!;
+    const labelEl = btn.querySelector('[data-label]')!;
+    const render = (done: boolean) => {
+      btn.setAttribute('aria-pressed', String(done));
+      checkEl.textContent = done ? '●' : '○';
+      labelEl.textContent = done ? 'Completed' : 'Mark complete';
+      btn.classList.toggle('text-accent', done);
+      btn.classList.toggle('border-accent/50', done);
+    };
+    render(getDone().includes(id));
+    btn.addEventListener('click', () => {
+      const done = getDone();
+      const i = done.indexOf(id);
+      if (i >= 0) done.splice(i, 1); else done.push(id);
+      try { localStorage.setItem(KEY, JSON.stringify(done)); } catch {}
+      render(done.includes(id));
+    });
+  }
+</script>

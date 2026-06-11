@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Container from '../../../components/Container.astro';
+import { topics, topicBySlug } from '../../../data/topics';
+
+export async function getStaticPaths() {
+  return topics.map((t) => ({ params: { topic: t.slug }, props: { topic: t } }));
+}
+const { topic } = Astro.props;
+
+const lessons = (await getCollection('lessons'))
+  .filter((l) => !l.data.draft && l.id.split('/')[0] === topic.slug)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const ids = lessons.map((l) => l.id).join(',');
+---
+<BaseLayout title={`${topic.title} — Learning Hub`} description={topic.blurb}>
+  <Container width="prose" class="py-16">
+    <nav class="text-sm text-muted" aria-label="Breadcrumb">
+      <a href="/learn" class="link-underline">Learning Hub</a> <span aria-hidden="true">/</span> {topic.title}
+    </nav>
+    <h1 class="mt-3 text-h1">{topic.title}</h1>
+    <p class="mt-4 text-lead text-muted">{topic.blurb}</p>
+
+    {lessons.length > 0 ? (
+      <>
+        <div data-progress data-ids={ids} class="mt-6 flex items-center gap-3">
+          <div class="h-1.5 w-40 overflow-hidden rounded-full bg-surface-2">
+            <div data-bar class="h-full w-0 rounded-full bg-accent transition-[width] duration-500"></div>
+          </div>
+          <span data-label class="text-sm text-muted">0/{lessons.length}</span>
+        </div>
+
+        <ol class="mt-8 divide-y divide-line border-y border-line">
+          {lessons.map((l, i) => (
+            <li>
+              <a href={`/learn/${topic.slug}/${l.id.split('/').slice(1).join('/')}`} class="group flex items-start gap-4 py-5">
+                <span data-lesson-dot data-id={l.id} class="mt-0.5 text-muted" aria-hidden="true">○</span>
+                <span class="min-w-0 flex-1">
+                  <span class="text-xs uppercase tracking-wider text-muted">Lesson {i + 1}</span>
+                  <span class="mt-0.5 block font-display text-h3 group-hover:text-accent">{l.data.title}</span>
+                  <span class="mt-1 block text-sm leading-relaxed text-muted">{l.data.summary}</span>
+                </span>
+                <span class="mt-1 shrink-0 text-muted transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </>
+    ) : (
+      <p class="mt-8 rounded-[var(--radius-card)] border border-line bg-surface px-5 py-4 text-muted">
+        Lessons for this topic are coming soon.
+      </p>
+    )}
+  </Container>
+</BaseLayout>
+
+<script>
+  const KEY = 'hub:done';
+  const getDone = (): string[] => {
+    try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; }
+  };
+  const done = getDone();
+  document.querySelectorAll<HTMLElement>('[data-lesson-dot]').forEach((el) => {
+    if (done.includes(el.dataset.id!)) { el.textContent = '●'; el.classList.add('text-accent'); el.classList.remove('text-muted'); }
+  });
+  document.querySelectorAll<HTMLElement>('[data-progress]').forEach((node) => {
+    const ids = (node.dataset.ids || '').split(',').filter(Boolean);
+    const n = ids.filter((i) => done.includes(i)).length;
+    const pct = ids.length ? Math.round((n / ids.length) * 100) : 0;
+    node.querySelector<HTMLElement>('[data-bar]')!.style.width = pct + '%';
+    node.querySelector<HTMLElement>('[data-label]')!.textContent = `${n}/${ids.length}`;
+  });
+</script>
