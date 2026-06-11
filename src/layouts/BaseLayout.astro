@@ -15,8 +15,8 @@ interface Props {
   ogImage?: string;
   /** Set true on pages that should not be indexed. */
   noindex?: boolean;
-  /** Document language. Defaults to English; Ukrainian lesson pages pass 'uk'. */
-  lang?: 'en' | 'uk';
+  /** Document language. Defaults to English; Ukrainian lesson pages pass 'ua'. */
+  lang?: 'en' | 'ua';
 }
 
 const { title, description = t('site.tagline'), ogImage = '/og-default.png', noindex = false, lang = 'en' } = Astro.props;
@@ -42,7 +42,7 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url);
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={t('site.title')} />
-    <meta property="og:locale" content={lang === 'uk' ? 'uk_UA' : 'en_GB'} />
+    <meta property="og:locale" content={lang === 'ua' ? 'uk_UA' : 'en_GB'} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical.href} />

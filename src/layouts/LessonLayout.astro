@@ -23,7 +23,7 @@ interface Props {
   prev?: NavItem | null;
   next?: NavItem | null;
   /** Language of this lesson page. */
-  lang?: 'en' | 'uk';
+  lang?: 'en' | 'ua';
   /** Canonical English URL of this lesson (for the language switcher). */
   enUrl?: string;
   /** Ukrainian-version URL of this lesson (path uses /ua), or null if none. */
@@ -42,7 +42,7 @@ const L = {
     keyTerms: 'Key terms', check: 'Check yourself', resources: 'Resources',
     prev: 'Previous', next: 'Next',
   },
-  uk: {
+  ua: {
     hub: 'Навчальний хаб', lessonOf: 'Урок', of: 'з', min: 'хв читання',
     objective: 'Мета уроку', why: 'Чому це важливо для PM', inShort: 'Коротко',
     keyTerms: 'Ключові терміни', check: 'Перевірте себе', resources: 'Ресурси',
@@ -68,8 +68,8 @@ const showSwitcher = Boolean(uaUrl);
         <div class="inline-flex overflow-hidden rounded-[var(--radius-pill)] border border-line text-xs font-medium" aria-label="Language">
           <a href={enUrl} aria-current={lang === 'en' ? 'true' : undefined}
             class:list={['px-3 py-1.5', lang === 'en' ? 'bg-accent text-on-accent' : 'text-fg/70 hover:text-accent']}>EN</a>
-          <a href={uaUrl} aria-current={lang === 'uk' ? 'true' : undefined}
-            class:list={['px-3 py-1.5', lang === 'uk' ? 'bg-accent text-on-accent' : 'text-fg/70 hover:text-accent']}>УКР</a>
+          <a href={uaUrl} aria-current={lang === 'ua' ? 'true' : undefined}
+            class:list={['px-3 py-1.5', lang === 'ua' ? 'bg-accent text-on-accent' : 'text-fg/70 hover:text-accent']}>УКР</a>
         </div>
       )}
     </div>
@@ -194,9 +194,9 @@ const showSwitcher = Boolean(uaUrl);
   onScroll();
 
   // Click any diagram to open it large (vector → crisp + readable labels)
-  const uk = document.documentElement.lang === 'uk';
-  const hintText = uk ? '⤢ Натисніть, щоб збільшити' : '⤢ Click to enlarge';
-  const enlargeLabel = uk ? 'Збільшити схему' : 'Enlarge diagram';
+  const ua = document.documentElement.lang === 'ua';
+  const hintText = ua ? '⤢ Натисніть, щоб збільшити' : '⤢ Click to enlarge';
+  const enlargeLabel = ua ? 'Збільшити схему' : 'Enlarge diagram';
 
   const overlay = document.getElementById('diagram-zoom');
   const zoomBody = document.getElementById('diagram-zoom-body');
