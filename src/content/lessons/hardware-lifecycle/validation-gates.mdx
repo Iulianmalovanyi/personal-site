@@ -4,6 +4,11 @@ order: 3
 objective: "After this lesson you'll be able to explain what EVT, DVT and PVT each prove, and why they have to happen in that order."
 why: "These three acronyms are interview table-stakes, but more importantly they're the gates where a hardware schedule slips or holds. Knowing what each one proves tells you what risk you're actually retiring — and what a 'failed' gate costs."
 summary: "The three prototype build-and-test stages — does it work, does it meet spec and pass certs, can the line build it — and why order matters."
+keyPoints:
+  - "EVT: does it work? DVT: does it meet spec and pass certs? PVT: can the line build it at yield?"
+  - "The gates run in a fixed order — each one assumes the previous question is already answered."
+  - "Certification happens at DVT, takes weeks, can fail, and sits on the critical path."
+  - "Low yield at PVT is 'margin death' even when the product works perfectly."
 keyTerms:
   - term: "EVT (Engineering Validation Test)"
     definition: "The first working prototypes. The question is simply 'does it work?' — expect fundamental design flaws to surface here."

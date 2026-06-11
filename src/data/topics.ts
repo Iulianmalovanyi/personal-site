@@ -13,7 +13,7 @@ export const topics: Topic[] = [
     slug: 'how-it-fits',
     title: 'How a connected product fits together',
     blurb: 'The system map: hardware, firmware, connectivity, cloud and apps as one whole.',
-    status: 'planned',
+    status: 'available',
   },
   {
     slug: 'electronics',

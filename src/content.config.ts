@@ -47,6 +47,7 @@ const lessons = defineCollection({
     order: z.number().default(100), // order within the topic
     objective: z.string(), // "After this lesson you'll be able to …"
     why: z.string(), // why it matters for a PM
+    keyPoints: z.array(z.string()).default([]), // scannable "In short" summary
     summary: z.string(), // meta description + topic listing
     keyTerms: z.array(z.object({ term: z.string(), definition: z.string() })).default([]),
     check: z.array(z.object({ q: z.string(), a: z.string() })).default([]),

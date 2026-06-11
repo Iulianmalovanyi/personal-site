@@ -16,6 +16,7 @@ interface Props {
   minutes: number;
   objective: string;
   why: string;
+  keyPoints?: string[];
   keyTerms?: { term: string; definition: string }[];
   check?: { q: string; a: string }[];
   resources?: { label: string; url: string }[];
@@ -25,7 +26,7 @@ interface Props {
 }
 const {
   title, summary, topic, lessonNumber, lessonTotal, minutes,
-  objective, why, keyTerms = [], check = [], resources = [],
+  objective, why, keyPoints = [], keyTerms = [], check = [], resources = [],
   lessonId, prev = null, next = null,
 } = Astro.props;
 ---
@@ -51,6 +52,20 @@ const {
 
     <!-- Why it matters for a PM -->
     <Callout type="pm" title="Why it matters for a PM"><p>{why}</p></Callout>
+
+    <!-- In short: scannable key points -->
+    {keyPoints.length > 0 && (
+      <div class="mt-6 rounded-[var(--radius-card)] border border-line bg-surface-2/50 px-5 py-4">
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted">In short</p>
+        <ul class="mt-2.5 space-y-2">
+          {keyPoints.map((p) => (
+            <li class="flex gap-2.5 text-[0.97rem] leading-relaxed text-fg/90">
+              <span class="mt-1 text-accent" aria-hidden="true">▪</span><span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
 
     <!-- The concept (MDX body: prose + diagrams) -->
     <article class="lesson-prose mt-8">
