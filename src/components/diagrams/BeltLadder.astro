@@ -1,0 +1,37 @@
+---
+// Lean Six Sigma belt levels as an ascending ladder. Green is highlighted as the
+// level that carries real weight for a PM (per the roadmap).
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+const belts = [
+  { name: 'White', note: 'awareness' },
+  { name: 'Yellow', note: 'foundational — clears the keyword filter' },
+  { name: 'Green', note: 'leads improvement projects — real weight', highlight: true },
+  { name: 'Black', note: 'expert / full-time — overkill for a PM' },
+];
+const bw = 168;
+const gap = 14;
+const x = (i: number) => 24 + i * (bw + gap);
+const h = (i: number) => 50 + i * 34;
+const baseY = 210;
+---
+<figure class="my-7">
+  <div class="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-surface p-4">
+    <svg viewBox="0 0 760 240" class="block h-auto w-full min-w-[600px]" role="img"
+      aria-label="Lean Six Sigma belt ladder rising from White to Yellow to Green to Black. Green is the level that carries real weight for a product manager.">
+      {belts.map((b, i) => (
+        <g class={b.highlight ? 'text-accent' : 'text-line'}>
+          <rect x={x(i)} y={baseY - h(i)} width={bw} height={h(i)} rx="8"
+            fill={b.highlight ? 'color-mix(in oklab, var(--color-accent) 12%, transparent)' : 'var(--color-surface-2)'}
+            stroke="currentColor" stroke-width={b.highlight ? 2 : 1} />
+          <text x={x(i) + bw / 2} y={baseY - h(i) + 26} text-anchor="middle" class="text-fg" fill="currentColor" font-size="15" font-weight="700">{b.name}</text>
+          <text x={x(i) + bw / 2} y={baseY - h(i) + 45} text-anchor="middle" class="text-muted" fill="currentColor" font-size="10.5">{b.note.length > 26 ? b.note.slice(0, 26) : b.note}</text>
+        </g>
+      ))}
+      <g class="text-accent">
+        <text x={x(2) + bw / 2} y={baseY - h(2) - 8} text-anchor="middle" fill="currentColor" font-size="11.5" font-weight="700">↑ sweet spot for a PM</text>
+      </g>
+    </svg>
+  </div>
+  {caption && <figcaption class="mt-2 text-sm text-muted">{caption}</figcaption>}
+</figure>

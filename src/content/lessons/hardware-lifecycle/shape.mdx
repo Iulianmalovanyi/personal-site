@@ -27,6 +27,7 @@ resources:
     url: "https://en.wikipedia.org/wiki/New_product_development"
 ---
 import LifecycleTimeline from '../../../components/diagrams/LifecycleTimeline.astro';
+import CostOfChange from '../../../components/diagrams/CostOfChange.astro';
 
 A software product can feel like it has no fixed shape — you ship, learn, and ship again, often the same day. A physical product is different. It moves through a **fixed sequence of stages**, mostly in order, and each one is harder and more expensive to undo than the last. Learning that sequence is the single most useful map you can carry into a hardware conversation.
 
@@ -57,6 +58,10 @@ In software, you can defer decisions cheaply: build a bit, learn, change it. Har
 - **Money goes out before any product comes in.** Much of the cost is spent up front, long before the first unit ships.
 
 Put together, this flips the software habit on its head: instead of deferring decisions until you have more information, you **front-load the de-risking** — you spend effort early to retire the scariest unknowns *before* they get expensive to fix.
+
+<CostOfChange caption="The same idea as a curve. A change that's trivial during design becomes expensive in production and near-impossible once units are in customers' hands." />
+
+**A concrete example.** Suppose you under-spec the antenna to shave a few cents off the cost. Catch it *during design* and the fix is an afternoon's rework. Catch it after the board is fabricated (EVT) and it's a **respin** — weeks and money. Catch it after certification (DVT) and changing the radio can force you to re-test for compliance. And once thousands of units have shipped, you can't fix the antenna at all — only design a new revision and leave the field units as they are. The *same decision* costs wildly different amounts depending on when you confront it. Front-loading just means confronting it while it's still cheap.
 
 ## What this means for you as a PM
 

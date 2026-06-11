@@ -1,0 +1,36 @@
+---
+// Six Sigma's core idea: narrow the variation so the whole spread fits inside the
+// customer's limits. Wide spread spills past the limits (defects); tight spread doesn't.
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+const base = 210;
+const lsl = 250;
+const usl = 530;
+---
+<figure class="my-7">
+  <div class="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-surface p-4">
+    <svg viewBox="0 0 780 250" class="block h-auto w-full min-w-[560px]" role="img"
+      aria-label="Two distributions between a lower and upper spec limit. A wide distribution spills past the limits, producing defects; a narrow distribution sits comfortably inside them.">
+      <!-- baseline -->
+      <g class="text-line"><line x1="40" y1={base} x2="740" y2={base} stroke="currentColor" stroke-width="1.5" /></g>
+
+      <!-- spec limits -->
+      <g class="text-muted">
+        <line x1={lsl} y1="30" x2={lsl} y2={base} stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" />
+        <line x1={usl} y1="30" x2={usl} y2={base} stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" />
+        <text x={lsl} y="24" text-anchor="middle" fill="currentColor" font-size="12" font-weight="600">LSL</text>
+        <text x={usl} y="24" text-anchor="middle" fill="currentColor" font-size="12" font-weight="600">USL</text>
+      </g>
+
+      <!-- wide distribution (spills past limits) -->
+      <path d={`M120 ${base} C 250 ${base} 300 95 390 95 C 480 95 530 ${base} 660 ${base}`} fill="none" class="text-muted" stroke="currentColor" stroke-width="2" opacity="0.8" />
+      <text x="120" y={base + 22} class="text-muted" fill="currentColor" font-size="11.5">defects ⟵</text>
+      <text x="660" y={base + 22} text-anchor="end" class="text-muted" fill="currentColor" font-size="11.5">⟶ defects</text>
+
+      <!-- narrow distribution (inside limits) -->
+      <path d={`M300 ${base} C 350 ${base} 365 55 390 55 C 415 55 430 ${base} 480 ${base}`} fill="none" class="text-accent" stroke="currentColor" stroke-width="2.5" />
+      <text x="390" y="48" text-anchor="middle" class="text-accent" fill="currentColor" font-size="12" font-weight="700">tighter = fewer defects</text>
+    </svg>
+  </div>
+  {caption && <figcaption class="mt-2 text-sm text-muted">{caption}</figcaption>}
+</figure>

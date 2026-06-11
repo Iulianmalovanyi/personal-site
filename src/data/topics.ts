@@ -55,7 +55,7 @@ export const topics: Topic[] = [
     slug: 'lean-six-sigma',
     title: 'Lean & Six Sigma',
     blurb: "Process and quality methodologies, and what's worth certifying.",
-    status: 'planned',
+    status: 'available',
   },
   {
     slug: 'hardware-vs-software-pm',

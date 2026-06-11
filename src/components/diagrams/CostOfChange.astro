@@ -1,0 +1,39 @@
+---
+// The cost of changing a hardware product rises sharply across its lifecycle.
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+const marks = [
+  { x: 90, label: 'Design' },
+  { x: 300, label: 'Validation' },
+  { x: 510, label: 'Production' },
+  { x: 700, label: 'In the field' },
+];
+---
+<figure class="my-7">
+  <div class="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-surface p-4">
+    <svg viewBox="0 0 780 250" class="block h-auto w-full min-w-[520px]" role="img"
+      aria-label="A curve rising steeply from left to right: the cost of changing a hardware product is low during design and rises sharply through validation, production and the field.">
+      <!-- axes -->
+      <g class="text-line">
+        <line x1="60" y1="30" x2="60" y2="200" stroke="currentColor" stroke-width="1.5" />
+        <line x1="60" y1="200" x2="740" y2="200" stroke="currentColor" stroke-width="1.5" />
+      </g>
+      <text x="20" y="115" class="text-muted" fill="currentColor" font-size="11.5" font-weight="600" transform="rotate(-90 20 115)" text-anchor="middle">cost to change</text>
+
+      <!-- rising curve -->
+      <path d="M70 190 C 280 185, 430 150, 560 95 S 700 35, 730 28" fill="none" class="text-accent" stroke="currentColor" stroke-width="2.5" />
+      <circle cx="730" cy="28" r="4" class="text-accent" fill="currentColor" />
+
+      <!-- stage marks -->
+      {marks.map((m) => (
+        <g class="text-muted">
+          <line x1={m.x} y1="200" x2={m.x} y2="206" stroke="currentColor" stroke-width="1.5" />
+          <text x={m.x} y="222" text-anchor="middle" fill="currentColor" font-size="12">{m.label}</text>
+        </g>
+      ))}
+      <text x="120" y="180" class="text-muted" fill="currentColor" font-size="11.5">cheap &amp; easy</text>
+      <text x="715" y="20" text-anchor="end" class="text-accent" fill="currentColor" font-size="11.5" font-weight="600">expensive / impossible</text>
+    </svg>
+  </div>
+  {caption && <figcaption class="mt-2 text-sm text-muted">{caption}</figcaption>}
+</figure>

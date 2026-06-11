@@ -49,6 +49,16 @@ The first thing to get straight: hardware has **one-time costs** and **per-unit 
 
 That split explains a lot of hardware behaviour. High NRE wants high volume to spread it thin. High BOM cost can't be volume'd away — it's baked into every unit, which is why **cost-down** (shaving cents off the BOM) is a permanent activity, and why the **COGS target** is set so early in design.
 
+### How volume changes the maths
+
+A quick, hypothetical illustration (numbers invented to show the *shape*, not real figures):
+
+- Say one-time **NRE** is **$100,000**, and each unit's **BOM** is **$20**.
+- Build **1,000** units → the NRE adds **$100** per unit → effective cost ≈ **$120**.
+- Build **100,000** units → the NRE adds just **$1** per unit → effective cost ≈ **$21**.
+
+Same product, wildly different unit economics — purely from volume spreading the fixed NRE. It's why hardware businesses obsess over volume, and why a high-NRE design can be smart at scale and ruinous for a niche product.
+
 ## Words that gate your timing and volume
 
 - **Lead time** — the wait to receive something you ordered. Components, board fabrication, tooling and certification each carry weeks-to-months of lead time, and they chain together into the critical path. This is why hardware can't "sprint."

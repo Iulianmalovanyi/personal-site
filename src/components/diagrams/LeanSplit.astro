@@ -1,0 +1,39 @@
+---
+// "Lean" means two different things — operations (Lean/Six Sigma) vs product (Lean Startup).
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+---
+<figure class="my-7">
+  <div class="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-surface p-5">
+    <svg viewBox="0 0 760 240" class="block h-auto w-full min-w-[520px]" role="img"
+      aria-label="The word Lean splits into two meanings: Lean and Six Sigma for operations, and Lean Startup for product.">
+      <!-- root -->
+      <g class="text-fg">
+        <rect x="320" y="20" width="120" height="46" rx="10" fill="var(--color-surface-2)" stroke="currentColor" stroke-width="1.5" class="text-line" />
+        <text x="380" y="48" text-anchor="middle" fill="currentColor" font-size="17" font-weight="700">"Lean"</text>
+      </g>
+      <!-- connectors -->
+      <g class="text-line">
+        <path d="M380 66 V92 H190 V108" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <path d="M380 66 V92 H570 V108" fill="none" stroke="currentColor" stroke-width="1.5" />
+      </g>
+      <!-- left: operations -->
+      <g>
+        <rect x="40" y="108" width="300" height="104" rx="10" class="text-accent" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <text x="190" y="138" text-anchor="middle" class="text-fg" fill="currentColor" font-size="15" font-weight="700">Lean &amp; Six Sigma</text>
+        <text x="190" y="160" text-anchor="middle" class="text-accent" fill="currentColor" font-size="12" font-weight="600">the operations side</text>
+        <text x="190" y="184" text-anchor="middle" class="text-muted" fill="currentColor" font-size="12">make processes faster &amp;</text>
+        <text x="190" y="200" text-anchor="middle" class="text-muted" fill="currentColor" font-size="12">more consistent · certifiable</text>
+      </g>
+      <!-- right: product -->
+      <g>
+        <rect x="420" y="108" width="300" height="104" rx="10" class="text-line" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <text x="570" y="138" text-anchor="middle" class="text-fg" fill="currentColor" font-size="15" font-weight="700">Lean Startup</text>
+        <text x="570" y="160" text-anchor="middle" class="text-fg" fill="currentColor" font-size="12" font-weight="600">the product side</text>
+        <text x="570" y="184" text-anchor="middle" class="text-muted" fill="currentColor" font-size="12">learn what to build via</text>
+        <text x="570" y="200" text-anchor="middle" class="text-muted" fill="currentColor" font-size="12">experiments · not certifiable</text>
+      </g>
+    </svg>
+  </div>
+  {caption && <figcaption class="mt-2 text-sm text-muted">{caption}</figcaption>}
+</figure>

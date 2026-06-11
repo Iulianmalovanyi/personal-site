@@ -59,6 +59,16 @@ Once a design exists, you don't just "go to production." You prove it in three e
 
 **The PM's job:** validate yield and assembly quality before committing to volume. Low yield is "margin death" — if one unit in five is scrap, the four good ones have to pay for it.
 
+## What failing a gate actually costs
+
+The gates fail in different — and increasingly expensive — ways:
+
+- **Fail EVT** and you've learned early, on a handful of prototypes. Painful but cheap; this is the *good* place to find a flaw.
+- **Fail DVT** and you may be redoing reliability work or re-booking a certification lab — weeks of slip on the critical path, because you can't launch without passing.
+- **Fail PVT** (low yield) and every sellable unit quietly carries the cost of the scrapped ones — a tax on margin that can make a "finished" product unprofitable.
+
+The pattern is the whole reason for front-loading risk: **the later the gate, the more a failure costs.**
+
 ## Why the order is fixed
 
 You can't validate manufacturing (PVT) of a design that doesn't yet meet spec (DVT), and you can't certify a design that doesn't yet work (EVT). Each gate stands on the one before. When you hear a hardware team say "we slipped DVT," they're telling you the *meets-spec-and-passes-certs* question isn't answered yet — and that everything downstream just moved.

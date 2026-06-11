@@ -1,0 +1,35 @@
+---
+// The 8 wastes of Lean, via the DOWNTIME mnemonic.
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+const wastes = [
+  { l: 'D', name: 'Defects' },
+  { l: 'O', name: 'Overproduction' },
+  { l: 'W', name: 'Waiting' },
+  { l: 'N', name: 'Non-used talent' },
+  { l: 'T', name: 'Transportation' },
+  { l: 'I', name: 'Inventory' },
+  { l: 'M', name: 'Motion' },
+  { l: 'E', name: 'Extra-processing' },
+];
+const cols = 4;
+const cw = 185;
+const ch = 86;
+const x = (i: number) => 16 + (i % cols) * cw;
+const y = (i: number) => 20 + Math.floor(i / cols) * (ch + 14);
+---
+<figure class="my-7">
+  <div class="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-surface p-4">
+    <svg viewBox="0 0 760 210" class="block h-auto w-full min-w-[600px]" role="img"
+      aria-label="The eight wastes of Lean, mnemonic DOWNTIME: Defects, Overproduction, Waiting, Non-used talent, Transportation, Inventory, Motion, Extra-processing.">
+      {wastes.map((w, i) => (
+        <g>
+          <rect x={x(i)} y={y(i)} width={cw - 14} height={ch} rx="9" fill="var(--color-surface-2)" stroke="currentColor" stroke-width="1" class="text-line" />
+          <text x={x(i) + 18} y={y(i) + 54} class="text-accent" fill="currentColor" font-size="38" font-weight="800" font-family="var(--font-display)">{w.l}</text>
+          <text x={x(i) + 56} y={y(i) + 50} class="text-fg" fill="currentColor" font-size="14" font-weight="600">{w.name}</text>
+        </g>
+      ))}
+    </svg>
+  </div>
+  {caption && <figcaption class="mt-2 text-sm text-muted">{caption}</figcaption>}
+</figure>

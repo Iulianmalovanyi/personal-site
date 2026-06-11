@@ -1,0 +1,67 @@
+---
+title: "Six Sigma: reducing variation"
+order: 3
+objective: "After this lesson you'll be able to explain what Six Sigma is for, what 'six sigma' actually refers to, and the DMAIC cycle teams use to improve a process."
+why: "Six Sigma is how operations and quality teams attack inconsistency — the field-quality and yield problems that quietly decide hardware margins. Your QA and test-strategy background maps onto it almost directly."
+keyPoints:
+  - "Where Lean removes waste, Six Sigma removes variation — making output consistent and predictable."
+  - "'Six sigma' is a quality target: so little variation that defects are extremely rare (about 3.4 per million opportunities)."
+  - "Improvement runs through DMAIC: Define → Measure → Analyze → Improve → Control."
+  - "It's data-driven — measure before you change, and prove the fix actually held."
+summary: "Six Sigma's goal of consistency, what the 'six sigma' target means, and the data-driven DMAIC cycle used to get there."
+keyTerms:
+  - term: "Variation"
+    definition: "How much output differs from one run to the next. Less variation means more predictable quality."
+  - term: "Defect"
+    definition: "Any output that falls outside the customer's acceptable limits (the spec)."
+  - term: "DMAIC"
+    definition: "The five-step Six Sigma improvement cycle: Define, Measure, Analyze, Improve, Control."
+  - term: "DPMO"
+    definition: "Defects per million opportunities — the unit Six Sigma uses to express how rare defects are."
+  - term: "Voice of the customer"
+    definition: "What 'good' means to the customer, translated into measurable limits the process must hit."
+check:
+  - q: "In one line, how do Lean and Six Sigma differ?"
+    a: "Lean removes waste (speed and flow); Six Sigma removes variation (consistency). They're complementary, which is why they're often combined."
+  - q: "What does the '3.4 per million' figure mean?"
+    a: "At a 'six sigma' level of quality, a process produces only about 3.4 defects per million opportunities — extremely consistent. It's a benchmark/target, not something a PM computes by hand."
+  - q: "Why does DMAIC put Measure before Improve?"
+    a: "Because you can't tell whether a change helped without a baseline. Six Sigma is data-driven: measure current performance, find the real root causes, then change — and confirm in Control that the gain stuck."
+resources:
+  - label: "Six Sigma — overview"
+    url: "https://en.wikipedia.org/wiki/Six_Sigma"
+  - label: "DMAIC — the improvement cycle"
+    url: "https://en.wikipedia.org/wiki/DMAIC"
+---
+import SigmaVariation from '../../../components/diagrams/SigmaVariation.astro';
+import DMAIC from '../../../components/diagrams/DMAIC.astro';
+
+Lean asks "are we doing wasteful steps?" Six Sigma asks a different question: **"is our output consistent?"** A process can be fast and waste-free yet still produce one bad unit in twenty — and in hardware, that inconsistency is what eats margin.
+
+## The core idea: shrink the variation
+
+Every real process varies. Make 1,000 units and their dimensions, weights or readings spread around a target. The customer sets **limits** (a spec); anything outside them is a **defect**.
+
+<SigmaVariation caption="Same target, two processes. The wide one spills past the spec limits — defects. The tight one fits comfortably inside. Six Sigma is the work of making the spread tight." />
+
+The name is literal-ish: **"six sigma"** describes a process so tightly controlled that even six standard deviations of variation still fit inside the limits — which works out to roughly **3.4 defects per million opportunities (DPMO)**. You don't need the statistics; you need the idea: *six sigma = astonishingly consistent.*
+
+## How teams get there: DMAIC
+
+Six Sigma improvements follow a disciplined, data-driven cycle called **DMAIC**:
+
+<DMAIC caption="DMAIC — the backbone of a Six Sigma project. Each step is gated by evidence, not opinion." />
+
+- **Define** — the problem, the customer requirement (**voice of the customer**), and the goal.
+- **Measure** — how the process actually performs today; get a real baseline.
+- **Analyze** — dig for the *root* causes of the variation, not the symptoms.
+- **Improve** — change the process and test that the change works.
+- **Control** — lock in the gain so it doesn't quietly slip back.
+
+The discipline is the point: you don't "fix" first and hope. You measure, find the true cause, change, and prove it held.
+
+## Why it matters for a PM
+
+- **It's the language of quality and yield.** When PVT yield is low or field defects spike (from the lifecycle topic), Six Sigma is the toolkit the team will reach for. You'll understand the plan and the data behind it.
+- **Your QA background is a real edge.** Test strategy, defect management and root-cause analysis *are* this world. You already think in baselines and verification — DMAIC will feel familiar.
+- **It pairs with Lean.** Most organisations don't pick one: they combine them — which is the next lesson.

@@ -54,6 +54,10 @@ Now the product is made to *work*: the electronics (captured in a **schematic**,
 
 **The PM's job:** manage those cross-discipline dependencies and **lock requirements**. Scope creep is especially dangerous here, because a late change can ripple across electrical, mechanical, *and* firmware work at once — each with its own lead time.
 
+### Why locking requirements matters so much here
+
+A late change in engineering design rarely stays contained. Add a feature that needs a bigger battery → the battery needs more space → the enclosure grows → the tooling changes → cost and timeline both move — across three teams at once, each with its own lead time. That ripple is why "just one more thing" is far more dangerous in hardware than in software, and why a big part of the PM's job at this stage is simply *protecting a decision that's already been made.*
+
 ## The thread through all three
 
 Notice the pattern: at every design stage the PM is protecting two things — **the cost target** and **a locked, coherent set of requirements** — against the natural pull toward "just one more feature" or "just a slightly nicer shell." Get those right and the validation stages (next lesson) go smoothly. Get them wrong and you'll discover it the hard way, on real prototypes, when fixes cost real money.

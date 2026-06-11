@@ -1,0 +1,40 @@
+---
+// Lean Startup's build–measure–learn loop.
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+// three stage nodes around a circle
+const cx = 300, cy = 165, r = 95;
+const pts = [
+  { a: -90, k: 'Build', s: 'an MVP' },
+  { a: 30, k: 'Measure', s: 'real use → data' },
+  { a: 150, k: 'Learn', s: 'keep or pivot' },
+];
+const pos = (a: number) => ({ x: cx + r * Math.cos((a * Math.PI) / 180), y: cy + r * Math.sin((a * Math.PI) / 180) });
+---
+<figure class="my-7">
+  <div class="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-surface p-4">
+    <svg viewBox="0 0 600 300" class="block h-auto w-full min-w-[420px]" role="img"
+      aria-label="The build–measure–learn loop: build an MVP, measure real use to get data, learn whether to keep going or pivot, and repeat.">
+      <!-- loop circle -->
+      <circle cx={cx} cy={cy} r={r} fill="none" class="text-line" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 5" />
+      <!-- clockwise arrowheads on the circle -->
+      {pts.map((p) => {
+        const a2 = p.a + 60;
+        const e = pos(a2);
+        return <path d={`M${e.x} ${e.y} l-6 -8 l11 3 z`} class="text-muted" fill="currentColor" transform={`rotate(${a2 + 95} ${e.x} ${e.y})`} />;
+      })}
+      {pts.map((p) => {
+        const c = pos(p.a);
+        return (
+          <g>
+            <circle cx={c.x} cy={c.y} r="40" fill="var(--color-surface-2)" class="text-accent" stroke="currentColor" stroke-width="2" />
+            <text x={c.x} y={c.y - 2} text-anchor="middle" class="text-fg" fill="currentColor" font-size="15" font-weight="700">{p.k}</text>
+            <text x={c.x} y={c.y + 16} text-anchor="middle" class="text-muted" fill="currentColor" font-size="10.5">{p.s}</text>
+          </g>
+        );
+      })}
+      <text x={cx} y={cy + 4} text-anchor="middle" class="text-muted" fill="currentColor" font-size="11" font-weight="600">repeat fast</text>
+    </svg>
+  </div>
+  {caption && <figcaption class="mt-2 text-sm text-muted">{caption}</figcaption>}
+</figure>
